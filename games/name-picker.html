@@ -3,22 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arcade Claw Machine - BilikBBM</title>
+  <title>Arcade Claw 3D - BilikBBM</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
     :root {
       --primary: #f472b6;
-      --primary-hover: #ec4899;
-      --accent: #a78bfa;
-      --bg: #1e1b4b;
-      --card-bg: #2e1065;
-      --text: #ffffff;
-      --border: #f472b6;
+      --accent: #818cf8;
+      --bg: #0f172a;
     }
 
     * {
@@ -31,197 +27,185 @@
     }
 
     body {
-      background: radial-gradient(circle at center, #312e81 0%, #0f172a 100%);
-      color: var(--text);
+      background: radial-gradient(circle at center, #1e1b4b 0%, #090d16 100%);
+      color: #ffffff;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
 
     .header {
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(8px);
-      padding: 12px 20px;
+      background: rgba(15, 23, 42, 0.9);
+      padding: 12px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 2px solid #4338ca;
+      border-bottom: 2px solid #312e81;
     }
 
     .btn-back {
       text-decoration: none;
-      color: #cbd5e1;
-      font-weight: 700;
-      font-size: 0.9rem;
+      color: #94a3b8;
+      font-weight: 800;
+      font-size: 0.85rem;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
-    .btn-back:hover {
-      color: #ffffff;
-    }
-
-    .game-wrapper {
+    .stage-wrapper {
       max-width: 480px;
       width: 100%;
       margin: 0 auto;
-      padding: 12px 14px 24px;
-      flex: 1;
+      padding: 10px 12px 30px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      flex: 1;
     }
 
-    /* KABINET ARKED 3D */
-    .arcade-frame {
+    /* RANGKA KABINET ARKED */
+    .arcade-chassis {
       width: 100%;
-      background: #3b82f6;
-      border-radius: 26px;
-      border: 4px solid #1d4ed8;
-      box-shadow: 0 16px 36px rgba(0,0,0,0.5), inset 0 4px 0 #93c5fd, inset 0 -6px 0 #1e40af;
-      padding: 12px 12px 14px;
+      background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+      border-radius: 28px;
+      border: 4px solid #1e40af;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.6), inset 0 4px 0 #93c5fd, inset 0 -6px 0 #1e3a8a;
+      padding: 12px;
       position: relative;
     }
 
-    /* Tiang Lampu Neon Sisi */
-    .neon-pillar-left, .neon-pillar-right {
+    /* Tiang Lampu LED Neon */
+    .led-strip-l, .led-strip-r {
       position: absolute;
       top: 14px;
-      bottom: 70px;
-      width: 14px;
+      bottom: 74px;
+      width: 12px;
       border-radius: 99px;
-      background: repeating-linear-gradient(180deg, #facc15, #facc15 10px, #3b82f6 10px, #3b82f6 20px);
-      box-shadow: 0 0 10px #facc15;
+      background: repeating-linear-gradient(180deg, #fde047, #fde047 12px, #2563eb 12px, #2563eb 24px);
+      box-shadow: 0 0 12px #facc15;
       z-index: 10;
     }
-    .neon-pillar-left { left: 4px; }
-    .neon-pillar-right { right: 4px; }
+    .led-strip-l { left: 4px; }
+    .led-strip-r { right: 4px; }
 
-    /* Ruang Kaca Mesin Capit */
-    .glass-chamber {
+    /* RUANG KACA PERSPEKTIF 3D */
+    .glass-room {
       width: 100%;
-      height: 330px;
-      background: linear-gradient(180deg, #0284c7 0%, #1e1b4b 75%);
+      height: 350px;
+      background: linear-gradient(180deg, #0284c7 0%, #0369a1 40%, #082f49 100%);
       border-radius: 18px;
       position: relative;
       overflow: hidden;
-      border: 3px solid #60a5fa;
-      box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
+      border: 3px solid #38bdf8;
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.7);
     }
 
-    /* Pantulan Kaca */
-    .glass-glare {
+    /* Silau Kaca Depan */
+    .glass-reflection {
       position: absolute;
-      top: 0;
-      left: -20%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(105deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 60%);
+      inset: 0;
+      background: linear-gradient(125deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 30%, transparent 60%);
       pointer-events: none;
-      z-index: 12;
+      z-index: 20;
     }
 
-    /* Rel Atas & Mekanisme Derek Kuning */
-    .top-rail {
+    /* Rel Atas Metalik */
+    .rail-bar {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 16px;
-      background: #1e293b;
+      height: 18px;
+      background: linear-gradient(180deg, #64748b 0%, #1e293b 100%);
       border-bottom: 2px solid #0f172a;
-      z-index: 8;
+      z-index: 15;
     }
 
-    .crane-carriage {
+    /* KREN & CAKAR KUNING METALIK */
+    .claw-unit {
       position: absolute;
       top: 10px;
-      left: 50%;
+      left: 65%;
       transform: translateX(-50%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      z-index: 9;
-      transition: left 0.15s linear;
+      z-index: 18;
+      transition: left 0.1s linear;
     }
 
-    .crane-housing {
-      width: 50px;
-      height: 24px;
-      background: linear-gradient(180deg, #facc15 0%, #eab308 100%);
+    .crane-box {
+      width: 58px;
+      height: 28px;
+      background: linear-gradient(180deg, #facc15 0%, #ca8a04 100%);
       border-radius: 8px 8px 4px 4px;
-      border: 2px solid #a16207;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      position: relative;
+      border: 2.5px solid #713f12;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .crane-housing::after {
-      content: '';
-      position: absolute;
-      top: 4px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 14px;
-      height: 8px;
+    .crane-core {
+      width: 18px;
+      height: 10px;
       background: #ef4444;
       border-radius: 4px;
     }
 
-    .crane-rope {
-      width: 4px;
-      height: 45px;
-      background: repeating-linear-gradient(180deg, #cbd5e1, #cbd5e1 4px, #64748b 4px, #64748b 8px);
-      transition: height 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    .crane-wire {
+      width: 5px;
+      height: 40px;
+      background: repeating-linear-gradient(180deg, #cbd5e1, #cbd5e1 5px, #475569 5px, #475569 10px);
+      transition: height 0.8s cubic-bezier(0.3, 0, 0.2, 1);
     }
 
-    /* Kuku Capit 3D */
-    .claw-hub {
-      width: 28px;
-      height: 12px;
-      background: #eab308;
-      border-radius: 4px;
-      border: 2px solid #854d0e;
+    /* Cakar Kuning 3-Cabang */
+    .claw-pincers {
+      width: 44px;
+      height: 38px;
       position: relative;
     }
 
-    .claw-leg {
+    .pincer-leg {
       position: absolute;
-      width: 6px;
-      height: 32px;
-      background: linear-gradient(180deg, #fef08a 0%, #ca8a04 100%);
-      border: 1.5px solid #854d0e;
-      top: 6px;
+      width: 8px;
+      height: 36px;
+      background: linear-gradient(180deg, #fef08a 0%, #eab308 60%, #a16207 100%);
+      border: 1.5px solid #713f12;
       border-radius: 4px;
       transition: transform 0.3s ease;
     }
 
-    .leg-left {
-      left: -2px;
+    .pincer-l {
+      left: 2px;
+      top: 0;
       transform-origin: top left;
       transform: rotate(26deg);
-      border-bottom-left-radius: 12px;
+      border-bottom-left-radius: 14px;
     }
 
-    .leg-right {
-      right: -2px;
+    .pincer-r {
+      right: 2px;
+      top: 0;
       transform-origin: top right;
       transform: rotate(-26deg);
-      border-bottom-right-radius: 12px;
+      border-bottom-right-radius: 14px;
     }
 
-    /* Corong Hadiah (Prize Chute) Di Kiri */
-    .prize-chute {
+    /* CORONG HADIAH KIRI (PRIZE CHUTE) */
+    .prize-drop {
       position: absolute;
       bottom: 0;
       left: 0;
-      width: 90px;
-      height: 130px;
-      background: linear-gradient(135deg, #1d4ed8 0%, #172554 100%);
+      width: 95px;
+      height: 140px;
+      background: linear-gradient(145deg, #1d4ed8 0%, #0f172a 100%);
       border-top: 4px solid #60a5fa;
       border-right: 4px solid #60a5fa;
-      border-top-right-radius: 18px;
-      box-shadow: inset -6px 6px 14px rgba(0,0,0,0.6);
+      border-top-right-radius: 20px;
+      box-shadow: inset -6px 6px 16px rgba(0,0,0,0.7);
       z-index: 5;
       display: flex;
       flex-direction: column;
@@ -229,133 +213,126 @@
       justify-content: center;
       text-align: center;
       color: #93c5fd;
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.5px;
+      font-weight: 900;
+      font-size: 0.72rem;
     }
 
-    .prize-chute i {
-      font-size: 1.6rem;
+    .prize-drop i {
+      font-size: 1.8rem;
       color: #facc15;
-      margin-bottom: 4px;
-      animation: bounceChute 1.8s infinite alternate;
+      margin-bottom: 6px;
+      filter: drop-shadow(0 2px 8px #facc15);
     }
 
-    /* Bak Timbunan Patung Maskot Lucu */
-    .plushie-pit {
+    /* TIMBUNAN PATUNG HAIWAN 3D */
+    .plushie-ground {
       position: absolute;
       bottom: 0;
-      left: 90px;
+      left: 95px;
       right: 0;
-      height: 125px;
-      display: flex;
-      flex-wrap: wrap-reverse;
-      justify-content: center;
-      align-content: flex-start;
+      height: 140px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 6px;
-      padding: 8px;
-      background: rgba(0,0,0,0.25);
-      border-top-left-radius: 14px;
+      padding: 8px 6px 4px;
+      background: rgba(0,0,0,0.3);
+      border-top-left-radius: 16px;
     }
 
-    .plushie {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.3), inset -3px -3px 0 rgba(0,0,0,0.2);
-      animation: plushieFloat 2.8s ease-in-out infinite alternate;
+    .animal-doll {
+      width: 60px;
+      height: 60px;
+      position: relative;
+      cursor: pointer;
+      filter: drop-shadow(0 6px 8px rgba(0,0,0,0.4));
+      animation: dollFloat 3s ease-in-out infinite alternate;
     }
 
-    /* PANEL KAWALAN ARKED BAWAH (CONTROLLER DECK) */
-    .control-panel {
-      margin-top: 12px;
+    .animal-doll svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* DEK KAWALAN JOYSTICK & BUTANG GRAB */
+    .arcade-deck {
+      margin-top: 10px;
       background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
       border-radius: 20px;
-      padding: 14px 18px;
+      padding: 12px 18px;
       border: 3px solid #3b82f6;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: inset 0 3px 0 rgba(255,255,255,0.1), 0 8px 20px rgba(0,0,0,0.4);
+      box-shadow: inset 0 2px 0 rgba(255,255,255,0.15), 0 8px 24px rgba(0,0,0,0.5);
     }
 
-    /* Joystick & Butang Arah */
-    .joystick-group {
+    .stick-arrows {
       display: flex;
-      align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .btn-move {
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
+    .btn-steer {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
       border: 3px solid #475569;
       background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
-      color: #f8fafc;
-      font-size: 1.3rem;
+      color: #ffffff;
+      font-size: 1.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 4px 0 #0f172a, 0 6px 12px rgba(0,0,0,0.3);
-      transition: all 0.1s;
+      box-shadow: 0 5px 0 #0f172a, 0 6px 12px rgba(0,0,0,0.4);
     }
 
-    .btn-move:active {
-      transform: translateY(3px);
+    .btn-steer:active {
+      transform: translateY(4px);
       box-shadow: 0 1px 0 #0f172a;
       background: #475569;
     }
 
-    /* Butang Bulat Merah "GRAB" */
-    .btn-grab {
-      width: 82px;
-      height: 82px;
+    .btn-grab-big {
+      width: 86px;
+      height: 86px;
       border-radius: 50%;
       border: 4px solid #991b1b;
-      background: radial-gradient(circle at 35% 35%, #ef4444 0%, #b91c1c 70%);
+      background: radial-gradient(circle at 35% 35%, #f87171 0%, #ef4444 45%, #991b1b 100%);
       color: white;
       font-weight: 900;
-      font-size: 1.05rem;
-      letter-spacing: 1px;
+      font-size: 1.15rem;
+      letter-spacing: 1.5px;
       cursor: pointer;
+      box-shadow: 0 8px 0 #7f1d1d, 0 14px 28px rgba(239, 68, 68, 0.5);
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 0 #7f1d1d, 0 12px 24px rgba(239, 68, 68, 0.45);
-      transition: all 0.1s;
     }
 
-    .btn-grab:active {
+    .btn-grab-big:active {
       transform: translateY(6px);
       box-shadow: 0 2px 0 #7f1d1d;
     }
 
-    .btn-grab:disabled {
+    .btn-grab-big:disabled {
       opacity: 0.5;
       cursor: not-allowed;
       transform: none;
     }
 
-    /* Pengurusan Senarai Nama Murid */
-    .names-section {
+    /* PENGURUSAN NAMA */
+    .names-box {
       width: 100%;
-      background: rgba(30, 41, 59, 0.85);
+      background: rgba(30, 41, 59, 0.9);
       border-radius: 20px;
       padding: 16px 18px;
       border: 2px solid #475569;
-      margin-top: 16px;
+      margin-top: 14px;
     }
 
-    .names-section textarea {
+    .names-box textarea {
       width: 100%;
-      height: 80px;
+      height: 75px;
       border-radius: 12px;
       border: 1.5px solid #64748b;
       background: #0f172a;
@@ -367,12 +344,8 @@
       resize: vertical;
     }
 
-    .names-section textarea:focus {
-      border-color: #38bdf8;
-    }
-
-    /* Pop-up Pemenang Arkade */
-    .winner-overlay {
+    /* POP-UP TAHNIAH */
+    .modal-winner {
       position: fixed;
       inset: 0;
       background: rgba(15, 23, 42, 0.85);
@@ -384,7 +357,7 @@
       padding: 20px;
     }
 
-    .winner-box {
+    .winner-sheet {
       background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
       padding: 30px 24px;
       border-radius: 28px;
@@ -392,296 +365,345 @@
       width: 100%;
       max-width: 380px;
       border: 4px solid #facc15;
-      box-shadow: 0 20px 50px rgba(250, 204, 21, 0.35);
-      animation: popBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 20px 50px rgba(250, 204, 21, 0.4);
     }
 
-    .winner-box h2 {
+    .winner-sheet h2 {
       font-size: 2.2rem;
       font-weight: 900;
       color: #facc15;
-      margin: 14px 0 22px;
-      word-break: break-word;
-      text-shadow: 0 4px 10px rgba(250, 204, 21, 0.4);
+      margin: 12px 0 20px;
+      text-shadow: 0 4px 12px rgba(250, 204, 21, 0.4);
     }
 
-    .btn-next {
+    .btn-again {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       border-radius: 99px;
       border: none;
-      background: linear-gradient(135deg, #f472b6, #a78bfa);
+      background: linear-gradient(135deg, #f472b6, #818cf8);
       color: white;
-      font-weight: 800;
+      font-weight: 900;
       font-size: 1rem;
       cursor: pointer;
     }
 
-    /* Animasi */
-    @keyframes plushieFloat {
-      from { transform: translateY(0); }
-      to { transform: translateY(-5px); }
-    }
-    @keyframes bounceChute {
-      from { transform: translateY(0); }
-      to { transform: translateY(-4px); }
-    }
-    @keyframes popBounce {
-      from { transform: scale(0.7); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+    @keyframes dollFloat {
+      from { transform: translateY(0) rotate(-2deg); }
+      to { transform: translateY(-4px) rotate(2deg); }
     }
   </style>
 </head>
 <body>
 
-  <!-- Bar Navigasi Atas -->
   <header class="header">
     <a href="../index.html" class="btn-back">
       <i class="fa-solid fa-arrow-left"></i> Menu Utama
     </a>
-    <span style="font-weight: 900; color: #facc15; letter-spacing: 0.5px;">🕹️ CLAW MASTER</span>
+    <span style="font-weight: 900; color: #facc15;">🕹️ 3D ANIMAL CLAW</span>
   </header>
 
-  <div class="game-wrapper">
-    <!-- RANGKA MESIN KABINET ARKED -->
-    <div class="arcade-frame">
-      <div class="neon-pillar-left"></div>
-      <div class="neon-pillar-right"></div>
+  <div class="stage-wrapper">
+    <!-- KABINET ARKED UTAMA -->
+    <div class="arcade-chassis">
+      <div class="led-strip-l"></div>
+      <div class="led-strip-r"></div>
 
-      <div class="glass-chamber" id="glass-stage">
-        <div class="glass-glare"></div>
-        <div class="top-rail"></div>
+      <div class="glass-room">
+        <div class="glass-reflection"></div>
+        <div class="rail-bar"></div>
 
-        <!-- Mekanisme Derek Kuning Capit -->
-        <div class="crane-carriage" id="crane-unit" style="left: 65%;">
-          <div class="crane-housing"></div>
-          <div class="crane-rope" id="crane-rope"></div>
-          <div class="claw-hub">
-            <div class="claw-leg leg-left" id="leg-left"></div>
-            <div class="claw-leg leg-right" id="leg-right"></div>
+        <!-- Mekanisme Cakar Kuning Metalik -->
+        <div class="claw-unit" id="claw-unit" style="left: 65%;">
+          <div class="crane-box"><div class="crane-core"></div></div>
+          <div class="crane-wire" id="crane-wire"></div>
+          <div class="claw-pincers">
+            <div class="pincer-leg pincer-l" id="pin-l"></div>
+            <div class="pincer-leg pincer-r" id="pin-r"></div>
           </div>
         </div>
 
         <!-- Corong Hadiah Sisi Kiri -->
-        <div class="prize-chute">
+        <div class="prize-drop">
           <i class="fa-solid fa-gift"></i>
           <span>PRIZE<br>DROP</span>
         </div>
 
-        <!-- Bak Patung Comel -->
-        <div class="plushie-pit" id="plushie-container">
-          <!-- Patung dimuatkan oleh JS -->
-        </div>
+        <!-- Timbunan Patung Haiwan 3D Berseni SVG -->
+        <div class="plushie-ground" id="dolls-container"></div>
       </div>
 
-      <!-- PANEL KAWALAN ARKED (ARAH & BUTANG GRAB) -->
-      <div class="control-panel">
-        <div class="joystick-group">
-          <button class="btn-move" id="btn-left" title="Gerak Kiri"><i class="fa-solid fa-caret-left"></i></button>
-          <button class="btn-move" id="btn-right" title="Gerak Kanan"><i class="fa-solid fa-caret-right"></i></button>
+      <!-- DEK KAWALAN (JOYSTICK & BUTANG GRAB) -->
+      <div class="arcade-deck">
+        <div class="stick-arrows">
+          <button class="btn-steer" id="btn-left"><i class="fa-solid fa-arrow-left"></i></button>
+          <button class="btn-steer" id="btn-right"><i class="fa-solid fa-arrow-right"></i></button>
         </div>
 
-        <button class="btn-grab" id="btn-grab" onclick="triggerGrab()">
-          <span>GRAB</span>
+        <button class="btn-grab-big" id="btn-grab" onclick="actionGrab()">
+          GRAB
         </button>
       </div>
     </div>
 
-    <!-- PENGURUSAN SENARAI NAMA MURID -->
-    <div class="names-section">
+    <!-- PENGURUSAN NAMA MURID -->
+    <div class="names-box">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <label style="font-weight: 800; font-size: 0.88rem; color: #e2e8f0;">
+        <label style="font-weight: 800; font-size: 0.88rem;">
           <i class="fa-solid fa-users" style="color: #facc15;"></i> Senarai Nama Murid:
         </label>
-        <span id="name-count-pill" style="font-size: 0.78rem; font-weight: 800; color: #f472b6;">8 Nama</span>
+        <span id="name-count" style="font-size: 0.78rem; font-weight: 800; color: #f472b6;">8 Nama</span>
       </div>
 
-      <textarea id="names-box" placeholder="Satu nama setiap baris..." oninput="onNamesChanged()"></textarea>
+      <textarea id="names-text" placeholder="Satu nama setiap baris..." oninput="onNamesChanged()"></textarea>
 
       <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
         <label style="font-size: 0.82rem; color: #94a3b8; display: flex; align-items: center; gap: 6px; cursor: pointer;">
-          <input type="checkbox" id="chk-remove" checked>
+          <input type="checkbox" id="chk-auto" checked>
           <span>Singkir nama yang terpilih</span>
         </label>
-        <button onclick="restoreDefaults()" style="background: none; border: none; color: #38bdf8; font-size: 0.78rem; text-decoration: underline; cursor: pointer;">
-          Reset
+        <button onclick="restoreNames()" style="background: none; border: none; color: #38bdf8; font-size: 0.78rem; text-decoration: underline; cursor: pointer;">
+          Reset Senarai
         </button>
       </div>
     </div>
   </div>
 
   <!-- POP-UP PEMENANG -->
-  <div class="winner-overlay" id="winner-popup">
-    <div class="winner-box">
+  <div class="modal-winner" id="winner-modal">
+    <div class="winner-sheet">
       <p style="font-size: 0.85rem; font-weight: 800; color: #94a3b8; letter-spacing: 1px;">PATUNG TERPILIH UNTUK</p>
-      <h2 id="chosen-name">-</h2>
-      <button class="btn-next" onclick="dismissWinner()">Giliran Seterusnya</button>
+      <h2 id="winner-name">-</h2>
+      <button class="btn-again" onclick="closeWinner()">Giliran Seterusnya</button>
     </div>
   </div>
 
   <script>
-    const plushieEmojis = ['🐸', '🐰', '🐥', '🐱', '🐙', '🐻', '🐼', '🦊', '🦄', '🐨'];
-    const initialList = ['Ahmad', 'Sarah', 'Danish', 'Aisyah', 'Chong', 'Muthu', 'Haziq', 'Nurul'];
-    let studentNames = JSON.parse(localStorage.getItem('bbm_names')) || initialList;
+    // Koleksi Patung Haiwan Berbentuk SVG 3D (Kucing Pink, Katak Hijau, Anak Ayam Kuning, Arnab Biru)
+    const animalSVGs = [
+      // 1. Kucing Pink Gebu (Cat)
+      `<svg viewBox="0 0 100 100">
+        <circle cx="28" cy="28" r="14" fill="#ec4899"/>
+        <circle cx="28" cy="28" r="8" fill="#fbcfe8"/>
+        <circle cx="72" cy="28" r="14" fill="#ec4899"/>
+        <circle cx="72" cy="28" r="8" fill="#fbcfe8"/>
+        <circle cx="50" cy="56" r="36" fill="#f472b6"/>
+        <circle cx="50" cy="52" r="30" fill="#f472b6"/>
+        <!-- Mata & Pipi -->
+        <circle cx="38" cy="48" r="5" fill="#1e1b4b"/><circle cx="39" cy="46" r="2" fill="#ffffff"/>
+        <circle cx="62" cy="48" r="5" fill="#1e1b4b"/><circle cx="63" cy="46" r="2" fill="#ffffff"/>
+        <circle cx="32" cy="56" r="4" fill="#f43f5e" opacity="0.6"/>
+        <circle cx="68" cy="56" r="4" fill="#f43f5e" opacity="0.6"/>
+        <!-- Hidung & Mulut -->
+        <polygon points="50,54 47,57 53,57" fill="#be185d"/>
+        <path d="M 46 60 Q 50 63 54 60" stroke="#be185d" stroke-width="2" fill="none"/>
+      </svg>`,
 
-    let cranePosition = 65; // Peratusan dari kiri (30% hingga 85%)
-    let isMoving = false;
-    let isBusy = false;
-    let moveInterval = null;
+      // 2. Katak Hijau Comel (Frog)
+      `<svg viewBox="0 0 100 100">
+        <!-- Mata Menonjol -->
+        <circle cx="32" cy="30" r="14" fill="#22c55e"/>
+        <circle cx="32" cy="30" r="8" fill="#ffffff"/>
+        <circle cx="32" cy="30" r="4" fill="#0f172a"/>
+        <circle cx="68" cy="30" r="14" fill="#22c55e"/>
+        <circle cx="68" cy="30" r="8" fill="#ffffff"/>
+        <circle cx="68" cy="30" r="4" fill="#0f172a"/>
+        <!-- Badan -->
+        <ellipse cx="50" cy="58" rx="36" ry="30" fill="#4ade80"/>
+        <ellipse cx="50" cy="62" rx="24" ry="18" fill="#bbf7d0"/>
+        <!-- Pipi & Mulut Senyum -->
+        <circle cx="32" cy="58" r="4" fill="#f472b6" opacity="0.7"/>
+        <circle cx="68" cy="58" r="4" fill="#f472b6" opacity="0.7"/>
+        <path d="M 40 62 Q 50 72 60 62" stroke="#15803d" stroke-width="3" stroke-linecap="round" fill="none"/>
+      </svg>`,
 
-    const craneUnit = document.getElementById('crane-unit');
-    const craneRope = document.getElementById('crane-rope');
-    const legLeft = document.getElementById('leg-left');
-    const legRight = document.getElementById('leg-right');
+      // 3. Anak Ayam Kuning Bulat (Chick)
+      `<svg viewBox="0 0 100 100">
+        <circle cx="50" cy="52" r="36" fill="#facc15"/>
+        <circle cx="50" cy="48" r="32" fill="#fde047"/>
+        <!-- Sayap -->
+        <ellipse cx="16" cy="56" rx="6" ry="12" fill="#eab308" transform="rotate(20 16 56)"/>
+        <ellipse cx="84" cy="56" rx="6" ry="12" fill="#eab308" transform="rotate(-20 84 56)"/>
+        <!-- Mata -->
+        <circle cx="38" cy="46" r="4" fill="#0f172a"/><circle cx="39" cy="45" r="1.5" fill="#ffffff"/>
+        <circle cx="62" cy="46" r="4" fill="#0f172a"/><circle cx="63" cy="45" r="1.5" fill="#ffffff"/>
+        <circle cx="32" cy="52" r="4" fill="#fb923c" opacity="0.6"/>
+        <circle cx="68" cy="52" r="4" fill="#fb923c" opacity="0.6"/>
+        <!-- Paruh Oren -->
+        <polygon points="50,48 44,56 56,56" fill="#ea580c"/>
+      </svg>`,
+
+      // 4. Arnab Ungu Pastel (Bunny)
+      `<svg viewBox="0 0 100 100">
+        <!-- Telinga Panjang -->
+        <ellipse cx="36" cy="22" rx="7" ry="20" fill="#c084fc"/>
+        <ellipse cx="36" cy="22" rx="4" ry="14" fill="#fbcfe8"/>
+        <ellipse cx="64" cy="22" rx="7" ry="20" fill="#c084fc"/>
+        <ellipse cx="64" cy="22" rx="4" ry="14" fill="#fbcfe8"/>
+        <!-- Muka -->
+        <circle cx="50" cy="56" r="34" fill="#d8b4fe"/>
+        <!-- Mata & Hidung -->
+        <circle cx="38" cy="52" r="4.5" fill="#1e1b4b"/><circle cx="39" cy="50" r="1.5" fill="#ffffff"/>
+        <circle cx="62" cy="52" r="4.5" fill="#1e1b4b"/><circle cx="63" cy="50" r="1.5" fill="#ffffff"/>
+        <circle cx="32" cy="58" r="4" fill="#f43f5e" opacity="0.5"/>
+        <circle cx="68" cy="58" r="4" fill="#f43f5e" opacity="0.5"/>
+        <polygon points="50,58 47,62 53,62" fill="#db2777"/>
+      </svg>`
+    ];
+
+    const defaultNames = ['Ahmad', 'Sarah', 'Danish', 'Aisyah', 'Chong', 'Muthu', 'Haziq', 'Nurul'];
+    let studentList = JSON.parse(localStorage.getItem('bbm_names')) || defaultNames;
+
+    let clawX = 65; // Posisi mendatar (30% ke 85%)
+    let busy = false;
+    let holdTimer = null;
+
+    const clawUnit = document.getElementById('claw-unit');
+    const craneWire = document.getElementById('crane-wire');
+    const pinL = document.getElementById('pin-l');
+    const pinR = document.getElementById('pin-r');
     const btnGrab = document.getElementById('btn-grab');
 
-    function renderPlushies() {
-      const pit = document.getElementById('plushie-container');
-      const colors = ['#f472b6', '#34d399', '#facc15', '#60a5fa', '#a78bfa', '#fb923c'];
-      
-      pit.innerHTML = studentNames.slice(0, 10).map((_, idx) => `
-        <div class="plushie" style="background: ${colors[idx % colors.length]}; animation-delay: ${idx * 0.2}s;">
-          ${plushieEmojis[idx % plushieEmojis.length]}
+    function renderDolls() {
+      const container = document.getElementById('dolls-container');
+      container.innerHTML = studentList.slice(0, 6).map((_, i) => `
+        <div class="animal-doll" style="animation-delay: ${i * 0.3}s;">
+          ${animalSVGs[i % animalSVGs.length]}
         </div>
       `).join('');
     }
 
-    function syncStorage() {
-      localStorage.setItem('bbm_names', JSON.stringify(studentNames));
-      document.getElementById('name-count-pill').textContent = studentNames.length + ' Nama';
+    function sync() {
+      localStorage.setItem('bbm_names', JSON.stringify(studentList));
+      document.getElementById('name-count').textContent = studentList.length + ' Nama';
     }
 
     function onNamesChanged() {
-      const txt = document.getElementById('names-box').value;
-      studentNames = txt.split('\n').map(n => n.trim()).filter(Boolean);
-      syncStorage();
-      renderPlushies();
+      const val = document.getElementById('names-text').value;
+      studentList = val.split('\n').map(s => s.trim()).filter(Boolean);
+      sync();
+      renderDolls();
     }
 
-    function restoreDefaults() {
-      studentNames = [...initialList];
-      document.getElementById('names-box').value = studentNames.join('\n');
-      syncStorage();
-      renderPlushies();
+    function restoreNames() {
+      studentList = [...defaultNames];
+      document.getElementById('names-text').value = studentList.join('\n');
+      sync();
+      renderDolls();
     }
 
     // KAWALAN PERGERAKAN CRANE
-    function moveLeft() {
-      if (isBusy || cranePosition <= 30) return;
-      cranePosition -= 3;
-      if (cranePosition < 30) cranePosition = 30;
-      craneUnit.style.left = cranePosition + '%';
+    function goLeft() {
+      if (busy || clawX <= 30) return;
+      clawX -= 3;
+      if (clawX < 30) clawX = 30;
+      clawUnit.style.left = clawX + '%';
     }
 
-    function moveRight() {
-      if (isBusy || cranePosition >= 85) return;
-      cranePosition += 3;
-      if (cranePosition > 85) cranePosition = 85;
-      craneUnit.style.left = cranePosition + '%';
+    function goRight() {
+      if (busy || clawX >= 85) return;
+      clawX += 3;
+      if (clawX > 85) clawX = 85;
+      clawUnit.style.left = clawX + '%';
     }
 
-    // Sambungkan butang tekan/tahan untuk skrin sentuh & tetikus
-    const btnLeft = document.getElementById('btn-left');
-    const btnRight = document.getElementById('btn-right');
-
-    function setupHoldButton(btn, action) {
-      btn.addEventListener('mousedown', () => { action(); moveInterval = setInterval(action, 80); });
-      btn.addEventListener('touchstart', (e) => { e.preventDefault(); action(); moveInterval = setInterval(action, 80); });
-      window.addEventListener('mouseup', () => clearInterval(moveInterval));
-      window.addEventListener('touchend', () => clearInterval(moveInterval));
+    function bindHold(btn, action) {
+      btn.addEventListener('mousedown', () => { action(); holdTimer = setInterval(action, 80); });
+      btn.addEventListener('touchstart', (e) => { e.preventDefault(); action(); holdTimer = setInterval(action, 80); });
+      window.addEventListener('mouseup', () => clearInterval(holdTimer));
+      window.addEventListener('touchend', () => clearInterval(holdTimer));
     }
-    setupHoldButton(btnLeft, moveLeft);
-    setupHoldButton(btnRight, moveRight);
+    bindHold(document.getElementById('btn-left'), goLeft);
+    bindHold(document.getElementById('btn-right'), goRight);
 
-    // Sambungkan anak panah papan kekunci
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') moveLeft();
-      if (e.key === 'ArrowRight') moveRight();
-      if (e.key === ' ' || e.key === 'Enter') triggerGrab();
+      if (e.key === 'ArrowLeft') goLeft();
+      if (e.key === 'ArrowRight') goRight();
+      if (e.key === ' ' || e.key === 'Enter') actionGrab();
     });
 
-    // MEKANIK GRAB & JATUH KE CORONG HADIAH
-    function triggerGrab() {
-      if (isBusy) return;
-      if (studentNames.length === 0) {
+    // MEKANIK TURUN DALAM HINGGA KENA PATUNG & CENGKAM
+    function actionGrab() {
+      if (busy) return;
+      if (studentList.length === 0) {
         alert('Sila masukkan sekurang-kurangnya 1 nama murid!');
         return;
       }
 
-      isBusy = true;
+      busy = true;
       btnGrab.disabled = true;
 
-      const luckyIdx = Math.floor(Math.random() * studentNames.length);
-      const winnerName = studentNames[luckyIdx];
+      const luckyIndex = Math.floor(Math.random() * studentList.length);
+      const winnerName = studentList[luckyIndex];
 
-      // 1. Kuku Turun Menjunam
-      craneRope.style.height = '165px';
+      // 1. Tali Turun Sepenuhnya Hingga 220px (Kena Kepala Patung)
+      craneWire.style.height = '220px';
 
       setTimeout(() => {
-        // 2. Kuku Mencengkam Rapat
-        legLeft.style.transform = 'rotate(40deg)';
-        legRight.style.transform = 'rotate(-40deg)';
+        // 2. Kuku Mencengkam Rapat Sekeliling Patung
+        pinL.style.transform = 'rotate(42deg)';
+        pinR.style.transform = 'rotate(-42deg)';
 
         setTimeout(() => {
-          // 3. Kuku Naik Semula ke Atas Sambil Bawa Hadiah
-          craneRope.style.height = '45px';
+          // 3. Tarik Naik Semula ke Atas Bersama Hadiah
+          craneWire.style.height = '40px';
 
           setTimeout(() => {
-            // 4. Bergerak ke Arah Corong Hadiah (Prize Drop di Kiri)
-            craneUnit.style.transition = 'left 1s cubic-bezier(0.4, 0, 0.2, 1)';
-            craneUnit.style.left = '16%';
+            // 4. Bergerak ke Arah Corong Hadiah Sisi Kiri (16%)
+            clawUnit.style.transition = 'left 1s cubic-bezier(0.4, 0, 0.2, 1)';
+            clawUnit.style.left = '16%';
 
             setTimeout(() => {
-              // 5. Buka Kuku & Lepaskan Hadiah ke Corong
-              legLeft.style.transform = 'rotate(26deg)';
-              legRight.style.transform = 'rotate(-26deg)';
+              // 5. Buka Kuku & Lepaskan Patung ke Dalam Corong
+              pinL.style.transform = 'rotate(26deg)';
+              pinR.style.transform = 'rotate(-26deg)';
 
               setTimeout(() => {
                 // 6. Paparkan Pemenang dengan Konfeti
-                announceWinner(winnerName, luckyIdx);
+                showWinner(winnerName, luckyIndex);
               }, 400);
             }, 1000);
           }, 800);
         }, 500);
-      }, 700);
+      }, 800);
     }
 
-    function announceWinner(name, idx) {
+    function showWinner(name, idx) {
       if (window.confetti) {
         confetti({ particleCount: 110, spread: 75, origin: { y: 0.6 } });
       }
 
-      document.getElementById('chosen-name').textContent = name;
-      document.getElementById('winner-popup').style.display = 'flex';
+      document.getElementById('winner-name').textContent = name;
+      document.getElementById('winner-modal').style.display = 'flex';
 
-      if (document.getElementById('chk-remove').checked) {
-        studentNames.splice(idx, 1);
-        document.getElementById('names-box').value = studentNames.join('\n');
-        syncStorage();
+      if (document.getElementById('chk-auto').checked) {
+        studentList.splice(idx, 1);
+        document.getElementById('names-text').value = studentList.join('\n');
+        sync();
       }
 
-      renderPlushies();
+      renderDolls();
     }
 
-    function dismissWinner() {
-      document.getElementById('winner-popup').style.display = 'none';
-      
-      // Pulihkan posisi asal crane
-      cranePosition = 65;
-      craneUnit.style.transition = 'left 0.7s ease';
-      craneUnit.style.left = '65%';
-      
+    function closeWinner() {
+      document.getElementById('winner-modal').style.display = 'none';
+
+      // Pulangkan kren ke posisi tengah
+      clawX = 65;
+      clawUnit.style.transition = 'left 0.7s ease';
+      clawUnit.style.left = '65%';
+
       setTimeout(() => {
-        craneUnit.style.transition = 'left 0.15s linear';
-        isBusy = false;
+        clawUnit.style.transition = 'left 0.1s linear';
+        busy = false;
         btnGrab.disabled = false;
       }, 700);
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('names-box').value = studentNames.join('\n');
-      syncStorage();
-      renderPlushies();
+      document.getElementById('names-text').value = studentList.join('\n');
+      sync();
+      renderDolls();
     });
   </script>
 </body>
