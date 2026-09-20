@@ -37,7 +37,6 @@
       flex-direction: column;
     }
 
-    /* Top Navigation */
     .header {
       background: rgba(255, 255, 255, 0.95);
       padding: 12px 20px;
@@ -57,17 +56,16 @@
       gap: 8px;
     }
 
-    /* Tabs Pilihan Tema */
     .tabs-bar {
       display: flex;
       justify-content: center;
-      gap: 10px;
-      padding: 14px 16px;
+      gap: 8px;
+      padding: 14px 12px;
       flex-wrap: wrap;
     }
 
     .tab-btn {
-      padding: 8px 18px;
+      padding: 8px 16px;
       border-radius: 99px;
       border: 2px solid var(--border);
       background: var(--card);
@@ -75,10 +73,10 @@
       font-weight: 700;
       font-size: 0.85rem;
       cursor: pointer;
-      transition: all 0.25s ease;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
+      transition: all 0.2s ease;
     }
 
     .tab-btn.active {
@@ -88,262 +86,229 @@
       box-shadow: 0 4px 12px rgba(244, 114, 182, 0.3);
     }
 
-    /* Arena Paparan Utama */
     .stage-container {
-      flex: 1;
-      max-width: 800px;
+      max-width: 650px;
       width: 100%;
       margin: 0 auto;
-      padding: 12px 16px 80px;
+      padding: 0 16px 30px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
     }
 
     .game-screen {
       width: 100%;
-      height: 380px;
-      background: white;
+      height: 320px;
+      background: #ffffff;
       border-radius: 28px;
       border: 3px solid var(--border);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 8px 25px rgba(244, 114, 182, 0.12);
       position: relative;
       overflow: hidden;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
     }
 
-    /* Tema 1: Claw Machine */
-    .claw-track {
-      position: absolute;
-      top: 0;
-      width: 100%;
-      height: 12px;
-      background: #cbd5e1;
-    }
-
-    .claw-head {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 32px;
-      transition: top 0.7s ease, left 0.5s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      z-index: 10;
-    }
-
-    .claw-rod {
-      width: 4px;
-      height: 40px;
-      background: #64748b;
-    }
-
-    .claw-pincers {
-      font-size: 24px;
-      color: #e11d48;
-      line-height: 1;
-    }
-
-    .capsule-pit {
-      position: absolute;
-      bottom: 12px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
-      width: 90%;
-    }
-
-    .ball {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      box-shadow: inset -3px -3px 0 rgba(0,0,0,0.15);
-      animation: floatBall 2s ease-in-out infinite alternate;
-    }
-
-    /* Tema 2: Balloons */
-    .balloon-cluster {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .balloon {
-      width: 58px;
-      height: 72px;
-      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-      cursor: pointer;
-      position: relative;
-      animation: floatBalloon 2.5s ease-in-out infinite alternate;
-      box-shadow: inset -4px -4px 0 rgba(0,0,0,0.1);
-    }
-
-    .balloon::after {
-      content: '';
-      position: absolute;
-      bottom: -6px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-left: 4px solid transparent;
-      border-right: 4px solid transparent;
-      border-bottom: 6px solid currentColor;
-    }
-
-    /* Tema 3: Fishing Pond */
-    .pond {
-      background: linear-gradient(180deg, #bae6fd 0%, #38bdf8 100%);
+    /* Animasi Claw */
+    .claw-box {
       width: 100%;
       height: 100%;
       position: relative;
+      background: linear-gradient(180deg, #fce7f3 0%, #ffffff 60%);
+    }
+
+    .claw-crane {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      transition: all 0.6s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 5;
+    }
+
+    .claw-string {
+      width: 4px;
+      height: 50px;
+      background: #94a3b8;
+      transition: height 0.6s ease;
+    }
+
+    .claw-fingers {
+      font-size: 28px;
+      color: #ec4899;
+      line-height: 1;
+    }
+
+    .balls-pit {
+      position: absolute;
+      bottom: 12px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 0 15px;
+    }
+
+    .ball-toy {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      box-shadow: inset -4px -4px 0 rgba(0,0,0,0.12);
+      animation: bounce 1.8s ease-in-out infinite alternate;
+    }
+
+    /* Animasi Balloon */
+    .balloon-area {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+      background: #fff;
+    }
+
+    .single-balloon {
+      width: 52px;
+      height: 68px;
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      animation: floatB 2.2s ease-in-out infinite alternate;
+      cursor: pointer;
+      position: relative;
+    }
+
+    /* Animasi Fishing */
+    .pond-area {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #bae6fd 0%, #38bdf8 100%);
+      position: relative;
       overflow: hidden;
     }
 
-    .fish {
+    .fish-actor {
       position: absolute;
-      font-size: 2rem;
-      animation: swim 6s linear infinite;
+      font-size: 2.2rem;
+      animation: fishSwim 6s linear infinite;
     }
 
-    .hook {
+    .fishing-rod-line {
       position: absolute;
-      top: -100px;
+      top: -120px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 24px;
-      color: #475569;
+      font-size: 26px;
+      color: #334155;
       transition: top 0.7s ease;
-      z-index: 10;
     }
 
-    /* Butang Aksi Bawah */
-    .action-bar {
-      margin-top: 20px;
-      display: flex;
-      gap: 12px;
+    /* Butang Cabutan Utama */
+    .action-btn {
       width: 100%;
-      justify-content: center;
-    }
-
-    .btn-action {
-      padding: 12px 30px;
+      margin: 16px 0;
+      padding: 14px 20px;
       border-radius: 99px;
       border: none;
       background: linear-gradient(135deg, var(--primary), var(--accent));
       color: white;
       font-weight: 800;
-      font-size: 1rem;
+      font-size: 1.05rem;
       cursor: pointer;
-      box-shadow: 0 6px 20px rgba(244, 114, 182, 0.35);
-    }
-
-    .btn-action:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    /* Modal Tetapan Senarai Nama */
-    .drawer-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: #ffffff;
-      border: 2px solid var(--border);
-      color: var(--primary);
-      font-size: 1.2rem;
+      box-shadow: 0 6px 20px rgba(244, 114, 182, 0.4);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-      cursor: pointer;
-      z-index: 100;
+      gap: 8px;
     }
 
-    .drawer {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.4);
-      display: none;
-      align-items: flex-end;
-      z-index: 200;
+    .action-btn:disabled {
+      opacity: 0.6;
     }
 
-    .drawer-content {
-      background: white;
+    /* Bahagian Pengurusan Nama Terbuka */
+    .names-manager {
       width: 100%;
-      max-width: 500px;
-      margin: 0 auto;
-      border-radius: 24px 24px 0 0;
-      padding: 24px;
-    }
-
-    .drawer-content textarea {
-      width: 100%;
-      height: 120px;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 18px 20px;
       border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 10px;
-      outline: none;
-      font-size: 0.9rem;
-      margin-top: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.02);
     }
 
-    /* Modal Pemenang */
-    .winner-modal {
+    .names-manager textarea {
+      width: 100%;
+      height: 90px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      padding: 10px;
+      font-size: 0.9rem;
+      outline: none;
+      margin-top: 8px;
+      resize: vertical;
+    }
+
+    .row-settings {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* Modal Pengumuman Nama */
+    .modal-winner {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 300;
+      z-index: 999;
       padding: 20px;
     }
 
-    .winner-card {
+    .card-winner {
       background: white;
-      padding: 30px;
+      padding: 28px 24px;
       border-radius: 24px;
       text-align: center;
       width: 100%;
       max-width: 360px;
       border: 3px solid var(--border);
-      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
     }
 
-    .winner-card h2 {
+    .card-winner h2 {
       font-size: 2rem;
+      font-weight: 800;
       color: var(--primary-hover);
-      margin: 14px 0;
+      margin: 12px 0 20px;
       word-break: break-word;
     }
 
-    /* Animasi */
-    @keyframes floatBall { from { transform: translateY(0); } to { transform: translateY(-8px); } }
-    @keyframes floatBalloon { from { transform: translateY(0) rotate(-2deg); } to { transform: translateY(-12px) rotate(2deg); } }
-    @keyframes swim {
-      0% { left: -10%; transform: scaleX(1); }
+    @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-8px); } }
+    @keyframes floatB { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+    @keyframes fishSwim {
+      0% { left: -15%; transform: scaleX(1); }
       49% { transform: scaleX(1); }
-      50% { left: 100%; transform: scaleX(-1); }
-      100% { left: -10%; transform: scaleX(-1); }
+      50% { left: 105%; transform: scaleX(-1); }
+      100% { left: -15%; transform: scaleX(-1); }
     }
-    @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   </style>
 </head>
 <body>
 
-  <!-- Bar Atas -->
   <header class="header">
     <a href="../index.html" class="btn-back">
       <i class="fa-solid fa-arrow-left"></i> Menu Utama
@@ -351,175 +316,201 @@
     <span style="font-weight: 800; color: var(--primary);">BilikBBM</span>
   </header>
 
-  <!-- Pilihan Tema -->
+  <!-- Pilihan 3 Tema -->
   <div class="tabs-bar">
-    <button class="tab-btn active" onclick="switchTheme('claw')">🕹️ Mesin Cakar</button>
-    <button class="tab-btn" onclick="switchTheme('balloon')">🎈 Letup Belon</button>
-    <button class="tab-btn" onclick="switchTheme('fishing')">🎣 Kolam Ikan</button>
+    <button class="tab-btn active" id="btn-claw" onclick="selectTheme('claw')">🕹️ Mesin Cakar</button>
+    <button class="tab-btn" id="btn-balloon" onclick="selectTheme('balloon')">🎈 Letup Belon</button>
+    <button class="tab-btn" id="btn-fishing" onclick="selectTheme('fishing')">🎣 Kolam Ikan</button>
   </div>
 
-  <!-- Arena Permainan -->
   <div class="stage-container">
-    <div class="game-screen" id="arena">
-      <!-- Kandungan Dinamik Tema Dimasukkan oleh JS -->
+    <!-- Skrin Arena Interaktif -->
+    <div class="game-screen" id="arena-screen">
+      <!-- Visual dimasukkan secara dinamik oleh JS -->
     </div>
 
-    <div class="action-bar">
-      <button class="btn-action" id="pick-btn" onclick="pickWinner()">
-        <i class="fa-solid fa-play"></i> Mulakan Cabutan!
-      </button>
-    </div>
-  </div>
+    <!-- Butang Tindakan Utama -->
+    <button class="action-btn" id="btn-spin" onclick="executeDraw()">
+      <i class="fa-solid fa-play"></i> Mulakan Cabutan!
+    </button>
 
-  <!-- Butang Tetapan Nama -->
-  <button class="drawer-btn" onclick="openDrawer()" title="Urus Nama Murid">
-    <i class="fa-solid fa-user-pen"></i>
-  </button>
-
-  <!-- Drawer Senarai Nama -->
-  <div class="drawer" id="names-drawer" onclick="closeDrawer(event)">
-    <div class="drawer-content" onclick="event.stopPropagation()">
-      <h3 style="font-weight: 800;">Senarai Nama Murid</h3>
-      <p style="font-size: 0.8rem; color: #64748b;">Tulis atau tampal nama murid (satu nama setiap baris):</p>
-      <textarea id="names-input"></textarea>
-      <div style="display: flex; align-items: center; gap: 8px; margin-top: 10px;">
-        <input type="checkbox" id="auto-remove" checked>
-        <label for="auto-remove" style="font-size: 0.85rem;">Buang nama selepas terpilih</label>
+    <!-- Tempat Masuk Senarai Nama Murid Secara Langsung -->
+    <div class="names-manager">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <label style="font-weight: 700; font-size: 0.9rem;">
+          <i class="fa-solid fa-users" style="color: var(--primary);"></i> Senarai Nama Murid:
+        </label>
+        <span id="name-count" style="font-size: 0.78rem; font-weight: 700; color: #ec4899;">8 Nama</span>
       </div>
-      <button class="btn-action" style="width: 100%; margin-top: 14px; padding: 10px;" onclick="saveNames()">
-        Simpan Senarai
-      </button>
+      
+      <textarea id="names-text-input" placeholder="Tampal senarai nama di sini (satu nama setiap baris)..." oninput="updateNamesFromInput()"></textarea>
+
+      <div class="row-settings">
+        <label style="font-size: 0.85rem; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+          <input type="checkbox" id="chk-auto-remove" checked>
+          <span>Buang nama selepas terpilih</span>
+        </label>
+        <button onclick="resetDefaultNames()" style="background: none; border: none; color: #94a3b8; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">
+          Pulih Senarai Asal
+        </button>
+      </div>
     </div>
   </div>
 
   <!-- Modal Pemenang -->
-  <div class="winner-modal" id="winner-modal">
-    <div class="winner-card">
-      <p style="font-size: 0.85rem; color: #64748b; font-weight: 700;">TAHNIAH KEPADA</p>
-      <h2 id="winner-name">-</h2>
-      <button class="btn-action" style="padding: 10px 24px;" onclick="closeWinnerModal()">Seterusnya</button>
+  <div class="modal-winner" id="winner-modal">
+    <div class="card-winner">
+      <p style="font-size: 0.85rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Tahniah Kepada</p>
+      <h2 id="winner-name-display">-</h2>
+      <button class="action-btn" style="padding: 10px;" onclick="closeModalWinner()">
+        Cabut Seterusnya
+      </button>
     </div>
   </div>
 
   <script>
-    let currentTheme = 'claw';
-    let names = JSON.parse(localStorage.getItem('bbm_names')) || [
-      'Ahmad', 'Sarah', 'Danish', 'Aisyah', 'Chong', 'Muthu', 'Haziq', 'Nurul'
-    ];
+    let activeTheme = 'claw';
+    const defaultList = ['Ahmad', 'Sarah', 'Danish', 'Aisyah', 'Chong', 'Muthu', 'Haziq', 'Nurul'];
+    let currentNames = JSON.parse(localStorage.getItem('bbm_names')) || defaultList;
 
-    const arena = document.getElementById('arena');
-    const pickBtn = document.getElementById('pick-btn');
+    function saveNamesToStorage() {
+      localStorage.setItem('bbm_names', JSON.stringify(currentNames));
+      const countEl = document.getElementById('name-count');
+      if (countEl) countEl.textContent = currentNames.length + ' Nama';
+    }
 
-    function renderTheme() {
-      if (currentTheme === 'claw') {
-        arena.innerHTML = `
-          <div class="claw-track"></div>
-          <div class="claw-head" id="claw-head">
-            <div class="claw-rod" id="claw-rod"></div>
-            <div class="claw-pincers"><i class="fa-solid fa-hand-fist"></i></div>
-          </div>
-          <div class="capsule-pit">
-            ${names.slice(0, 10).map((_, i) => `<div class="ball" style="background: ${['#f472b6','#60a5fa','#34d399','#fbbf24','#a78bfa'][i%5]};"></div>`).join('')}
+    function updateNamesFromInput() {
+      const val = document.getElementById('names-text-input').value;
+      currentNames = val.split('\n').map(s => s.trim()).filter(Boolean);
+      saveNamesToStorage();
+      renderArena();
+    }
+
+    function resetDefaultNames() {
+      currentNames = [...defaultList];
+      document.getElementById('names-text-input').value = currentNames.join('\n');
+      saveNamesToStorage();
+      renderArena();
+    }
+
+    function selectTheme(theme) {
+      activeTheme = theme;
+      document.getElementById('btn-claw').classList.toggle('active', theme === 'claw');
+      document.getElementById('btn-balloon').classList.toggle('active', theme === 'balloon');
+      document.getElementById('btn-fishing').classList.toggle('active', theme === 'fishing');
+      renderArena();
+    }
+
+    function renderArena() {
+      const screen = document.getElementById('arena-screen');
+      if (!screen) return;
+
+      if (activeTheme === 'claw') {
+        const colors = ['#f472b6', '#60a5fa', '#34d399', '#fbbf24', '#a78bfa'];
+        const ballsHtml = currentNames.slice(0, 8).map((_, i) => 
+          `<div class="ball-toy" style="background: ${colors[i % colors.length]};"></div>`
+        ).join('');
+
+        screen.innerHTML = `
+          <div class="claw-box">
+            <div class="claw-crane" id="claw-crane">
+              <div class="claw-string" id="claw-string"></div>
+              <div class="claw-fingers"><i class="fa-solid fa-hand-fist"></i></div>
+            </div>
+            <div class="balls-pit">${ballsHtml || '<p style="color:#94a3b8; font-size:0.9rem;">Sila masukkan nama murid di bawah</p>'}</div>
           </div>
         `;
-      } else if (currentTheme === 'balloon') {
-        arena.innerHTML = `
-          <div class="balloon-cluster">
-            ${names.slice(0, 8).map((n, i) => `
-              <div class="balloon" onclick="pickWinner()" style="background: ${['#f472b6','#60a5fa','#34d399','#fbbf24','#a78bfa'][i\%5]}; color: ${['#f472b6','#60a5fa','#34d399','#fbbf24','#a78bfa'][i%5]};"></div>
-            `).join('')}
+      } else if (activeTheme === 'balloon') {
+        const colors = ['#f472b6', '#60a5fa', '#34d399', '#fbbf24', '#a78bfa'];
+        const balloonsHtml = currentNames.slice(0, 8).map((n, i) => 
+          `<div class="single-balloon" onclick="executeDraw()" style="background: ${colors[i % colors.length]};"></div>`
+        ).join('');
+
+        screen.innerHTML = `
+          <div class="balloon-area">
+            ${balloonsHtml || '<p style="color:#94a3b8; font-size:0.9rem;">Sila masukkan nama murid di bawah</p>'}
           </div>
         `;
-      } else if (currentTheme === 'fishing') {
-        arena.innerHTML = `
-          <div class="pond">
-            <div class="hook" id="fish-hook"><i class="fa-solid fa-anchor"></i></div>
-            <div class="fish" style="top: 30%;"><i class="fa-solid fa-fish" style="color: #f97316;"></i></div>
-            <div class="fish" style="top: 60%; animation-duration: 8s;"><i class="fa-solid fa-fish" style="color: #ec4899;"></i></div>
-            <div class="fish" style="top: 75%; animation-duration: 5s;"><i class="fa-solid fa-shrimp" style="color: #ef4444;"></i></div>
+      } else if (activeTheme === 'fishing') {
+        screen.innerHTML = `
+          <div class="pond-area">
+            <div class="fishing-rod-line" id="rod-hook"><i class="fa-solid fa-anchor"></i></div>
+            <div class="fish-actor" style="top: 25%;"><i class="fa-solid fa-fish" style="color: #f97316;"></i></div>
+            <div class="fish-actor" style="top: 60%; animation-duration: 7s;"><i class="fa-solid fa-fish" style="color: #ec4899;"></i></div>
+            <div class="fish-actor" style="top: 80%; animation-duration: 4.5s;"><i class="fa-solid fa-shrimp" style="color: #ef4444;"></i></div>
           </div>
         `;
       }
     }
 
-    function switchTheme(theme) {
-      currentTheme = theme;
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      renderTheme();
-    }
-
-    function pickWinner() {
-      if (names.length === 0) {
-        alert('Sila masukkan sekurang-kurangnya satu nama di butang tetapan!');
-        openDrawer();
+    function executeDraw() {
+      if (currentNames.length === 0) {
+        alert('Sila taipkan sekurang-kurangnya 1 nama murid dalam kotak senarai!');
         return;
       }
 
-      pickBtn.disabled = true;
-      const selectedIndex = Math.floor(Math.random() * names.length);
-      const chosen = names[selectedIndex];
+      const spinBtn = document.getElementById('btn-spin');
+      spinBtn.disabled = true;
 
-      if (currentTheme === 'claw') {
-        const claw = document.getElementById('claw-head');
-        const rod = document.getElementById('claw-rod');
-        claw.style.left = '30%';
+      const luckyIndex = Math.floor(Math.random() * currentNames.length);
+      const chosenName = currentNames[luckyIndex];
+
+      if (activeTheme === 'claw') {
+        const crane = document.getElementById('claw-crane');
+        const str = document.getElementById('claw-string');
+        crane.style.left = '35%';
         setTimeout(() => {
-          rod.style.height = '160px';
+          str.style.height = '140px';
           setTimeout(() => {
-            rod.style.height = '40px';
-            setTimeout(() => { showWinner(chosen, selectedIndex); }, 700);
-          }, 700);
-        }, 500);
-      } else if (currentTheme === 'fishing') {
-        const hook = document.getElementById('fish-hook');
-        hook.style.top = '140px';
+            str.style.height = '50px';
+            setTimeout(() => {
+              announceWinner(chosenName, luckyIndex);
+            }, 600);
+          }, 600);
+        }, 400);
+      } else if (activeTheme === 'fishing') {
+        const hook = document.getElementById('rod-hook');
+        hook.style.top = '120px';
         setTimeout(() => {
-          hook.style.top = '-100px';
-          setTimeout(() => { showWinner(chosen, selectedIndex); }, 700);
-        }, 800);
+          hook.style.top = '-120px';
+          setTimeout(() => {
+            announceWinner(chosenName, luckyIndex);
+          }, 600);
+        }, 600);
       } else {
-        showWinner(chosen, selectedIndex);
+        // Balon
+        announceWinner(chosenName, luckyIndex);
       }
     }
 
-    function showWinner(name, index) {
-      confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
-      document.getElementById('winner-name').textContent = name;
+    function announceWinner(name, index) {
+      if (window.confetti) {
+        confetti({ particleCount: 90, spread: 65, origin: { y: 0.6 } });
+      }
+
+      document.getElementById('winner-name-display').textContent = name;
       document.getElementById('winner-modal').style.display = 'flex';
 
-      if (document.getElementById('auto-remove').checked) {
-        names.splice(index, 1);
-        localStorage.setItem('bbm_names', JSON.stringify(names));
+      if (document.getElementById('chk-auto-remove').checked) {
+        currentNames.splice(index, 1);
+        document.getElementById('names-text-input').value = currentNames.join('\n');
+        saveNamesToStorage();
       }
-      pickBtn.disabled = false;
-      renderTheme();
+
+      document.getElementById('btn-spin').disabled = false;
+      renderArena();
     }
 
-    function closeWinnerModal() {
+    function closeModalWinner() {
       document.getElementById('winner-modal').style.display = 'none';
-      renderTheme();
+      renderArena();
     }
 
-    function openDrawer() {
-      document.getElementById('names-input').value = names.join('\n');
-      document.getElementById('names-drawer').style.display = 'flex';
-    }
-
-    function closeDrawer(e) {
-      document.getElementById('names-drawer').style.display = 'none';
-    }
-
-    function saveNames() {
-      const raw = document.getElementById('names-input').value;
-      names = raw.split('\n').map(s => s.trim()).filter(Boolean);
-      localStorage.setItem('bbm_names', JSON.stringify(names));
-      closeDrawer();
-      renderTheme();
-    }
-
-    // Inisialisasi awal
-    renderTheme();
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('names-text-input').value = currentNames.join('\n');
+      saveNamesToStorage();
+      renderArena();
+    });
   </script>
 </body>
 </html>
