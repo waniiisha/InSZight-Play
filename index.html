@@ -141,7 +141,6 @@
       border-color: #be185d;
     }
 
-    /* Susunan Utama Container */
     .container {
       max-width: 1140px;
       margin: 0 auto;
@@ -174,7 +173,6 @@
       margin: 0 auto;
     }
 
-    /* Banner Profil Pengguna */
     .user-banner {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -202,7 +200,6 @@
     .badge-premium { background: #fef08a; color: #854d0e; }
     .badge-admin { background: #fbcfe8; color: #9d174d; }
 
-    /* Grid Permainan Responsif (Phone 1 col, Tablet 2 col, PC 3-4 col) */
     .section-title {
       font-size: 1.25rem;
       font-weight: 800;
@@ -274,7 +271,6 @@
       border-radius: 99px;
     }
 
-    /* Modal Popup */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -323,7 +319,6 @@
       border-color: var(--primary);
     }
 
-    /* Drawer Sisi untuk Admin Panel */
     .drawer-overlay {
       position: fixed;
       inset: 0;
@@ -367,7 +362,6 @@
       overflow-y: auto;
     }
 
-    /* Penyesuaian Peranti Mudah Alih */
     @media (max-width: 600px) {
       .navbar {
         padding: 12px 16px;
@@ -408,7 +402,7 @@
         <i class="fa-solid fa-moon"></i>
       </button>
 
-      <!-- Butang Buka Drawer Admin (Hanya muncul untuk Admin) -->
+      <!-- Butang Buka Drawer Admin -->
       <button class="btn btn-admin" id="btn-open-admin" style="display: none;" onclick="openDrawer()">
         <i class="fa-solid fa-user-shield"></i> <span class="txt-admin-btn">Admin</span>
       </button>
@@ -450,7 +444,7 @@
 
     <!-- Grid Kad Permainan -->
     <div class="grid">
-      <!-- Game 1: Name Picker -->
+      <!-- Game 1: Name Picker (Terus Buka games/name-picker.html) -->
       <div class="game-card">
         <div>
           <div class="game-icon"><i class="fa-solid fa-dharmachakra"></i></div>
@@ -502,7 +496,7 @@
     </div>
   </div>
 
-  <!-- Drawer Admin Sisi (Slide-out Offcanvas) -->
+  <!-- Drawer Admin Sisi -->
   <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
   <div class="drawer" id="admin-drawer">
     <div class="drawer-header">
@@ -564,7 +558,7 @@
     </div>
   </div>
 
-  <!-- Inisialisasi & Skrip Aplikasi -->
+  <!-- Skrip Utama -->
   <script>
     const SUPABASE_URL = 'https://wxrfxobmnruvutiquxlt.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4cmZ4b2JtbnJ1dnV0aXF1eGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5MDkxMjAsImV4cCI6MjEwNTQ4NTEyMH0.t_HUbFTJP6eJHZ_-7Fl020tXhW-cXPACFI6vnvwsRQc';
@@ -575,7 +569,7 @@
     let currentUserProfile = null;
     let currentLang = localStorage.getItem('bbm_lang') || 'bm';
 
-    // Kamus Bahasa (Dictionary)
+    // Kamus Bahasa
     const translations = {
       bm: {
         heroTitle: 'Pusat Interaktif <span>BBM Digital</span>',
@@ -662,7 +656,6 @@
       applyLanguage(currentLang === 'bm' ? 'en' : 'bm');
     }
 
-    // Pengendalian Mod Tema (Dark / Light)
     function initTheme() {
       const savedTheme = localStorage.getItem('bbm_theme') || 'light';
       if (savedTheme === 'dark') {
@@ -680,7 +673,6 @@
       document.getElementById('theme-btn').innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
     }
 
-    // Drawer Sisi Admin
     function openDrawer() {
       document.getElementById('drawer-overlay').style.display = 'block';
       document.getElementById('admin-drawer').classList.add('active');
@@ -692,7 +684,6 @@
       document.getElementById('admin-drawer').classList.remove('active');
     }
 
-    // Sesi Pengguna
     async function initSession() {
       initTheme();
       applyLanguage(currentLang);
@@ -768,7 +759,6 @@
       closeDrawer();
     }
 
-    // Modal Auth
     function openModal(mode) {
       currentMode = mode;
       document.getElementById('auth-modal').style.display = 'flex';
@@ -848,7 +838,6 @@
       renderLoggedOut();
     }
 
-    // Muat Data Admin Dalam Drawer
     async function loadAdminData() {
       const tbody = document.getElementById('users-list-body');
       const { data: users, error } = await db.from('profiles').select('*');
@@ -887,6 +876,7 @@
       else loadAdminData();
     }
 
+    // Fungsi Lancarkan Permainan (Kini Terus Paut ke Fail)
     function launchGame(gameKey) {
       if ((gameKey === 'lucky-box' || gameKey === 'snake-ladder') && (!currentUserProfile || currentUserProfile.plan !== 'premium')) {
         alert(currentLang === 'bm' 
@@ -894,7 +884,14 @@
           : 'This activity is exclusive for VIP Premium Plan! Contact admin to upgrade.');
         return;
       }
-      alert('Modul permainan ' + gameKey + ' akan dibina seterusnya!');
+
+      if (gameKey === 'name-picker') {
+        window.location.href = 'games/name-picker.html';
+      } else {
+        alert(currentLang === 'bm' 
+          ? 'Modul permainan ' + gameKey + ' akan dibina seterusnya!' 
+          : 'The activity ' + gameKey + ' will be built next!');
+      }
     }
 
     window.addEventListener('DOMContentLoaded', initSession);
