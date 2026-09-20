@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BilikBBM - Portal Bahan Bantu Mengajar Digital</title>
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --primary: #f472b6;
+      --primary-hover: #ec4899;
+      --primary-light: #fdf2f8;
+      --accent: #a78bfa;
+      --bg: #faf5ff;
+      --card-bg: #ffffff;
+      --text: #334155;
+      --text-light: #64748b;
+      --border: #f1f5f9;
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 16px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--primary-hover);
+      text-decoration: none;
+    }
+
+    .brand i {
+      font-size: 1.6rem;
+    }
+
+    .auth-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 99px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      box-shadow: 0 4px 14px rgba(244, 114, 182, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(244, 114, 182, 0.45);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary-light);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 32px 20px;
+      flex: 1;
+      width: 100%;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+
+    .hero h1 {
+      font-size: 2.3rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 12px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text-light);
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    /* Status Bar */
+    .user-banner {
+      background: white;
+      border-radius: var(--radius);
+      padding: 18px 24px;
+      display: none; /* Papar bila login */
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 36px;
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.03);
+      border: 1px solid var(--border);
+    }
+
+    .badge-pill {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 99px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-free { background: #e2e8f0; color: #475569; }
+    .badge-premium { background: #fef08a; color: #854d0e; }
+    .badge-admin { background: #fbcfe8; color: #9d174d; }
+
+    /* Game Cards Grid */
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 22px;
+    }
+
+    .game-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+      border: 1px solid var(--border);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 36px rgba(244, 114, 182, 0.15);
+      border-color: #fbcfe8;
+    }
+
+    .game-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 18px;
+      background: var(--primary-light);
+      color: var(--primary-hover);
+    }
+
+    .game-card h3 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: #1e293b;
+    }
+
+    .game-card p {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.5;
+      margin-bottom: 22px;
+    }
+
+    .tag-premium {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: #fef08a;
+      color: #854d0e;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 99px;
+    }
+
+    /* Modal / Popup */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-card {
+      background: white;
+      width: 100%;
+      max-width: 420px;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .modal-card h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #475569;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      outline: none;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+    }
+
+    /* Admin Panel Section */
+    .admin-section {
+      display: none;
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-top: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+      border: 2px dashed #fbcfe8;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="#" class="brand">
+      <i class="fa-solid fa-shapes"></i>
+      <span>BilikBBM</span>
+    </a>
+    <div class="auth-badge" id="nav-actions">
+      <button class="btn btn-outline" onclick="openModal('login')">Log Masuk</button>
+      <button class="btn btn-primary" onclick="openModal('register')">Daftar Percuma</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- Hero Banner -->
+    <div class="hero">
+      <h1>Pusat Interaktif <span>BBM Digital</span></h1>
+      <p>Peralatan PdP gamifikasi bilik darjah serba lengkap. Berfungsi dalam talian mahupun luar talian!</p>
+    </div>
+
+    <!-- Status Pengguna Aktif -->
+    <div class="user-banner" id="user-banner">
+      <div>
+        <h4 id="user-display-name" style="font-weight: 800; font-size: 1.1rem;">Cikgu</h4>
+        <p id="user-display-email" style="font-size: 0.85rem; color: var(--text-light);"></p>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span id="user-plan-badge" class="badge-pill badge-free">Pelan Free</span>
+        <button class="btn btn-outline" style="padding: 6px 14px; font-size: 0.85rem;" onclick="logout()">Log Keluar</button>
+      </div>
+    </div>
+
+    <!-- Senarai Permainan -->
+    <div class="section-title">
+      <i class="fa-solid fa-gamepad" style="color: var(--primary-hover);"></i>
+      <span>Pilih Permainan PdP</span>
+    </div>
+
+    <div class="grid">
+      <!-- Game 1: Name Picker (Free) -->
+      <div class="game-card">
+        <div>
+          <div class="game-icon"><i class="fa-solid fa-dharmachakra"></i></div>
+          <h3>Roda Putar (Name Picker)</h3>
+          <p>Putar roda untuk pilih nama murid bertuah, kumpulan, atau soalan secara rawak.</p>
+        </div>
+        <button class="btn btn-primary" onclick="launchGame('name-picker')">
+          <i class="fa-solid fa-play"></i> Buka Permainan
+        </button>
+      </div>
+
+      <!-- Game 2: Tic-Tac-Toe Soalan (Free) -->
+      <div class="game-card">
+        <div>
+          <div class="game-icon"><i class="fa-solid fa-xmarks-lines"></i></div>
+          <h3>Tic-Tac-Toe Kuiz</h3>
+          <p>Pertarungan X & O dua kumpulan. Jawab soalan betul untuk tanda petak kemenangan.</p>
+        </div>
+        <button class="btn btn-primary" onclick="launchGame('tic-tac-toe')">
+          <i class="fa-solid fa-play"></i> Buka Permainan
+        </button>
+      </div>
+
+      <!-- Game 3: Lucky Box (Premium) -->
+      <div class="game-card">
+        <span class="tag-premium"><i class="fa-solid fa-crown"></i> VIP</span>
+        <div>
+          <div class="game-icon"><i class="fa-solid fa-gift"></i></div>
+          <h3>Kotak Misteri (Lucky Box)</h3>
+          <p>Pilih kotak hadiah penuh debaran: tambah mata, tolak markah, atau bom perlawanan!</p>
+        </div>
+        <button class="btn btn-outline" onclick="launchGame('lucky-box')">
+          <i class="fa-solid fa-play"></i> Buka Permainan
+        </button>
+      </div>
+
+      <!-- Game 4: Ular & Tangga (Premium) -->
+      <div class="game-card">
+        <span class="tag-premium"><i class="fa-solid fa-crown"></i> VIP</span>
+        <div>
+          <div class="game-icon"><i class="fa-solid fa-stairs"></i></div>
+          <h3>Ular & Tangga Pintar</h3>
+          <p>Papan digital interaktif berskala besar dengan cabaran kad soalan di setiap petak.</p>
+        </div>
+        <button class="btn btn-outline" onclick="launchGame('snake-ladder')">
+          <i class="fa-solid fa-play"></i> Buka Permainan
+        </button>
+      </div>
+    </div>
+
+    <!-- Panel Khas Admin (Hanya muncul jika akaun admin login) -->
+    <div class="admin-section" id="admin-panel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="color: #9d174d; font-size: 1.3rem;"><i class="fa-solid fa-user-shield"></i> Papan Kawalan Superadmin</h2>
+        <span class="badge-pill badge-admin">Akses Khas</span>
+      </div>
+      <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 18px;">Uruskan status langganan cikgu terus daripada panel ini:</p>
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; text-align: left; border-collapse: collapse; font-size: 0.9rem;" id="users-table">
+          <thead>
+            <tr style="border-bottom: 2px solid #f1f5f9; color: #475569;">
+              <th style="padding: 10px;">Emel</th>
+              <th style="padding: 10px;">Status Pelan</th>
+              <th style="padding: 10px;">Tindakan</th>
+            </tr>
+          </thead>
+          <tbody id="users-list-body">
+            <tr><td colspan="3" style="padding: 10px; color: #94a3b8;">Memuatkan senarai cikgu...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Log Masuk & Daftar -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-card">
+      <h2 id="modal-title">Log Masuk</h2>
+      <p id="modal-sub" style="text-align: center; font-size: 0.85rem; color: #64748b; margin-bottom: 20px;">Masukkan butiran akaun anda</p>
+      
+      <div class="form-group" id="group-username" style="display: none;">
+        <label>Nama Panggilan Cikgu</label>
+        <input type="text" id="auth-username" class="form-control" placeholder="Cikgu Sarah">
+      </div>
+
+      <div class="form-group">
+        <label>Emel</label>
+        <input type="email" id="auth-email" class="form-control" placeholder="nama@gmail.com">
+      </div>
+
+      <div class="form-group">
+        <label>Kata Laluan</label>
+        <input type="password" id="auth-password" class="form-control" placeholder="••••••••">
+      </div>
+
+      <button class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;" id="auth-submit-btn" onclick="submitAuth()">
+        Teruskan
+      </button>
+
+      <button class="btn" style="width: 100%; justify-content: center; margin-top: 8px; color: #94a3b8; font-size: 0.85rem;" onclick="closeModal()">
+        Batal
+      </button>
+    </div>
+  </div>
+
+  <!-- Inisialisasi Supabase & Logik App -->
+  <script>
+    // Konfigurasi Supabase
+    const SUPABASE_URL = 'https://wxrfxobmnruvutiquxlt.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4cmZ4b2JtbnJ1dnV0aXF1eGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5MDkxMjAsImV4cCI6MjEwNTQ4NTEyMH0.t_HUbFTJP6eJHZ_-7Fl020tXhW-cXPACFI6vnvwsRQc';
+    
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let currentMode = 'login';
+    let currentUserProfile = null;
+
+    // Semak status sesi semasa laman dibuka
+    async function initSession() {
+      const { data: { session } } = await db.auth.getSession();
+      if (session) {
+        await loadUserProfile(session.user.id);
+      } else {
+        renderLoggedOut();
+      }
+    }
+
+    async function loadUserProfile(userId) {
+      const { data: profile, error } = await db
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (profile) {
+        currentUserProfile = profile;
+        renderLoggedIn(profile);
+        if (profile.role === 'admin') {
+          loadAdminDashboard();
+        }
+      }
+    }
+
+    function renderLoggedIn(profile) {
+      document.getElementById('nav-actions').style.display = 'none';
+      const banner = document.getElementById('user-banner');
+      banner.style.display = 'flex';
+
+      document.getElementById('user-display-name').textContent = profile.username || 'Cikgu';
+      document.getElementById('user-display-email').textContent = profile.email;
+      
+      const badge = document.getElementById('user-plan-badge');
+      if (profile.role === 'admin') {
+        badge.textContent = 'Admin / Premium';
+        badge.className = 'badge-pill badge-admin';
+      } else if (profile.plan === 'premium') {
+        badge.textContent = 'VIP Premium';
+        badge.className = 'badge-pill badge-premium';
+      } else {
+        badge.textContent = 'Pelan Free';
+        badge.className = 'badge-pill badge-free';
+      }
+    }
+
+    function renderLoggedOut() {
+      currentUserProfile = null;
+      document.getElementById('nav-actions').style.display = 'flex';
+      document.getElementById('user-banner').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'none';
+    }
+
+    // Modal Control
+    function openModal(mode) {
+      currentMode = mode;
+      document.getElementById('auth-modal').style.display = 'flex';
+      const title = document.getElementById('modal-title');
+      const submitBtn = document.getElementById('auth-submit-btn');
+      const groupUser = document.getElementById('group-username');
+
+      if (mode === 'register') {
+        title.textContent = 'Cipta Akaun Cikgu';
+        submitBtn.textContent = 'Daftar Sekarang';
+        groupUser.style.display = 'block';
+      } else {
+        title.textContent = 'Log Masuk Cikgu';
+        submitBtn.textContent = 'Masuk Sekarang';
+        groupUser.style.display = 'none';
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('auth-modal').style.display = 'none';
+    }
+
+    // Auth Submission
+    async function submitAuth() {
+      const email = document.getElementById('auth-email').value.trim();
+      const password = document.getElementById('auth-password').value.trim();
+      const username = document.getElementById('auth-username').value.trim();
+
+      if (!email || !password) {
+        alert('Sila masukkan emel dan kata laluan!');
+        return;
+      }
+
+      if (currentMode === 'register') {
+        const { data, error } = await db.auth.signUp({
+          email: email,
+          password: password,
+          options: { data: { username: username || 'Cikgu' } }
+        });
+        if (error) alert('Ralat daftar: ' + error.message);
+        else {
+          alert('Pendaftaran berjaya! Sistem akan log anda masuk.');
+          closeModal();
+          initSession();
+        }
+      } else {
+        const { data, error } = await db.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+        if (error) alert('Ralat log masuk: ' + error.message);
+        else {
+          closeModal();
+          initSession();
+        }
+      }
+    }
+
+    async function logout() {
+      await db.auth.signOut();
+      renderLoggedOut();
+    }
+
+    // Fungsi Admin: Muat Senarai Pengguna & Togol Premium
+    async function loadAdminDashboard() {
+      document.getElementById('admin-panel').style.display = 'block';
+      const tbody = document.getElementById('users-list-body');
+
+      const { data: users, error } = await db.from('profiles').select('*');
+      if (error) {
+        tbody.innerHTML = `<tr><td colspan="3" style="color:red;">Ralat: ${error.message}</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = '';
+      users.forEach(u => {
+        const tr = document.createElement('tr');
+        tr.style.borderBottom = '1px solid #f1f5f9';
+        tr.innerHTML = `
+          <td style="padding: 12px 10px;">${u.email} <br><small style="color:#94a3b8;">${u.username || ''}</small></td>
+          <td style="padding: 12px 10px;">
+            <span class="badge-pill ${u.plan === 'premium' ? 'badge-premium' : 'badge-free'}">${u.plan}</span>
+          </td>
+          <td style="padding: 12px 10px;">
+            <button class="btn btn-outline" style="padding: 4px 10px; font-size: 0.75rem;" onclick="togglePlan('${u.id}', '${u.plan}')">
+              Tukar ke ${u.plan === 'premium' ? 'Free' : 'Premium'}
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function togglePlan(userId, currentPlan) {
+      const newPlan = currentPlan === 'premium' ? 'free' : 'premium';
+      const { error } = await db.from('profiles').update({ plan: newPlan }).eq('id', userId);
+      if (error) alert('Gagal kemas kini: ' + error.message);
+      else loadAdminDashboard();
+    }
+
+    function launchGame(gameKey) {
+      if ((gameKey === 'lucky-box' || gameKey === 'snake-ladder') && (!currentUserProfile || currentUserProfile.plan !== 'premium')) {
+        alert('Permainan ini khas untuk Pelan Premium VIP! Cikgu boleh hubungi admin untuk naik taraf.');
+        return;
+      }
+      alert('Modul permainan ' + gameKey + ' akan kita bina pada langkah seterusnya!');
+    }
+
+    // Jalankan sesi bila buka
+    window.addEventListener('DOMContentLoaded', initSession);
+  </script>
+</body>
+</html>
