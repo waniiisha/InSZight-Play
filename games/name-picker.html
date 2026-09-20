@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Name Picker Interaktif - BilikBBM</title>
+  <title>Arcade Claw Machine - BilikBBM</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -15,10 +15,10 @@
       --primary: #f472b6;
       --primary-hover: #ec4899;
       --accent: #a78bfa;
-      --bg: #fdf2f8;
-      --card: #ffffff;
-      --text: #334155;
-      --border: #fbcfe8;
+      --bg: #1e1b4b;
+      --card-bg: #2e1065;
+      --text: #ffffff;
+      --border: #f472b6;
     }
 
     * {
@@ -26,11 +26,12 @@
       margin: 0;
       padding: 0;
       font-family: 'Plus Jakarta Sans', sans-serif;
+      user-select: none;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: var(--bg);
+      background: radial-gradient(circle at center, #312e81 0%, #0f172a 100%);
       color: var(--text);
       min-height: 100vh;
       display: flex;
@@ -38,17 +39,18 @@
     }
 
     .header {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
       padding: 12px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 15px rgba(244, 114, 182, 0.1);
+      border-bottom: 2px solid #4338ca;
     }
 
     .btn-back {
       text-decoration: none;
-      color: var(--text);
+      color: #cbd5e1;
       font-weight: 700;
       font-size: 0.9rem;
       display: flex;
@@ -56,103 +58,83 @@
       gap: 8px;
     }
 
-    .tabs-bar {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      padding: 14px 12px;
-      flex-wrap: wrap;
+    .btn-back:hover {
+      color: #ffffff;
     }
 
-    .tab-btn {
-      padding: 9px 18px;
-      border-radius: 99px;
-      border: 2px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-      font-weight: 700;
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-    }
-
-    .tab-btn.active {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: white;
-      border-color: transparent;
-      box-shadow: 0 4px 14px rgba(244, 114, 182, 0.35);
-    }
-
-    .stage-container {
-      max-width: 500px;
+    .game-wrapper {
+      max-width: 480px;
       width: 100%;
       margin: 0 auto;
-      padding: 0 16px 30px;
+      padding: 12px 14px 24px;
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    /* KABINET ARCADIA 3D CLAW MACHINE */
-    .arcade-machine {
+    /* KABINET ARKED 3D */
+    .arcade-frame {
       width: 100%;
-      background: #f472b6;
-      border-radius: 28px 28px 20px 20px;
-      box-shadow: 0 14px 30px rgba(236, 72, 153, 0.25), inset 0 4px 0 #fbcfe8, inset 0 -6px 0 #db2777;
-      padding: 10px 10px 14px;
-      border: 4px solid #db2777;
+      background: #3b82f6;
+      border-radius: 26px;
+      border: 4px solid #1d4ed8;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.5), inset 0 4px 0 #93c5fd, inset 0 -6px 0 #1e40af;
+      padding: 12px 12px 14px;
+      position: relative;
     }
 
-    /* Kanopi Atap Mesin */
-    .arcade-roof {
-      height: 28px;
-      background: repeating-linear-gradient(90deg, #ec4899, #ec4899 24px, #fbcfe8 24px, #fbcfe8 48px);
-      border-radius: 18px 18px 6px 6px;
-      border-bottom: 3px solid #db2777;
-      margin-bottom: 8px;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    /* Tiang Lampu Neon Sisi */
+    .neon-pillar-left, .neon-pillar-right {
+      position: absolute;
+      top: 14px;
+      bottom: 70px;
+      width: 14px;
+      border-radius: 99px;
+      background: repeating-linear-gradient(180deg, #facc15, #facc15 10px, #3b82f6 10px, #3b82f6 20px);
+      box-shadow: 0 0 10px #facc15;
+      z-index: 10;
     }
+    .neon-pillar-left { left: 4px; }
+    .neon-pillar-right { right: 4px; }
 
-    /* Kotak Kaca Mesin */
-    .glass-box {
+    /* Ruang Kaca Mesin Capit */
+    .glass-chamber {
       width: 100%;
       height: 330px;
-      background: linear-gradient(180deg, #e0f2fe 0%, #f0fdf4 100%);
-      border-radius: 16px;
+      background: linear-gradient(180deg, #0284c7 0%, #1e1b4b 75%);
+      border-radius: 18px;
       position: relative;
       overflow: hidden;
-      border: 3px solid #cbd5e1;
-      box-shadow: inset 0 0 20px rgba(56, 189, 248, 0.2);
+      border: 3px solid #60a5fa;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
     }
 
-    /* Efek Pantulan Kaca Transparan */
-    .glass-reflection {
+    /* Pantulan Kaca */
+    .glass-glare {
       position: absolute;
       top: 0;
       left: -20%;
-      width: 60%;
+      width: 50%;
       height: 100%;
-      background: linear-gradient(105deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 60%);
+      background: linear-gradient(105deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 60%);
       pointer-events: none;
-      z-index: 8;
+      z-index: 12;
     }
 
-    /* Rel Atas & Mesin Penggerak */
-    .crane-rail {
+    /* Rel Atas & Mekanisme Derek Kuning */
+    .top-rail {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 14px;
-      background: linear-gradient(180deg, #94a3b8 0%, #475569 100%);
-      border-bottom: 2px solid #334155;
-      z-index: 6;
+      height: 16px;
+      background: #1e293b;
+      border-bottom: 2px solid #0f172a;
+      z-index: 8;
     }
 
-    .crane-assembly {
+    .crane-carriage {
       position: absolute;
       top: 10px;
       left: 50%;
@@ -160,251 +142,241 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      z-index: 7;
-      transition: left 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 9;
+      transition: left 0.15s linear;
     }
 
-    .crane-motor {
-      width: 44px;
-      height: 20px;
-      background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
-      border-radius: 6px;
-      border: 2px solid #78350f;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-    }
-
-    .crane-cable {
-      width: 4px;
-      height: 50px;
-      background: repeating-linear-gradient(180deg, #64748b, #64748b 4px, #cbd5e1 4px, #cbd5e1 8px);
-      transition: height 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* Capit Mekanik 3D */
-    .claw-bracket {
-      width: 28px;
-      height: 12px;
-      background: #e11d48;
-      border-radius: 4px;
-      border: 2px solid #9f1239;
+    .crane-housing {
+      width: 50px;
+      height: 24px;
+      background: linear-gradient(180deg, #facc15 0%, #eab308 100%);
+      border-radius: 8px 8px 4px 4px;
+      border: 2px solid #a16207;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
       position: relative;
     }
 
-    .claw-finger-left, .claw-finger-right {
+    .crane-housing::after {
+      content: '';
       position: absolute;
-      width: 6px;
-      height: 26px;
-      background: linear-gradient(180deg, #e2e8f0 0%, #94a3b8 100%);
-      border: 1.5px solid #475569;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 8px;
+      background: #ef4444;
       border-radius: 4px;
-      top: 8px;
     }
 
-    .claw-finger-left {
-      left: 0;
+    .crane-rope {
+      width: 4px;
+      height: 45px;
+      background: repeating-linear-gradient(180deg, #cbd5e1, #cbd5e1 4px, #64748b 4px, #64748b 8px);
+      transition: height 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Kuku Capit 3D */
+    .claw-hub {
+      width: 28px;
+      height: 12px;
+      background: #eab308;
+      border-radius: 4px;
+      border: 2px solid #854d0e;
+      position: relative;
+    }
+
+    .claw-leg {
+      position: absolute;
+      width: 6px;
+      height: 32px;
+      background: linear-gradient(180deg, #fef08a 0%, #ca8a04 100%);
+      border: 1.5px solid #854d0e;
+      top: 6px;
+      border-radius: 4px;
+      transition: transform 0.3s ease;
+    }
+
+    .leg-left {
+      left: -2px;
       transform-origin: top left;
-      transform: rotate(20deg);
+      transform: rotate(26deg);
       border-bottom-left-radius: 12px;
     }
 
-    .claw-finger-right {
-      right: 0;
+    .leg-right {
+      right: -2px;
       transform-origin: top right;
-      transform: rotate(-20deg);
+      transform: rotate(-26deg);
       border-bottom-right-radius: 12px;
     }
 
-    /* Lubang Hadiah & Tumpukan Bola Kapsul Gashapon 3D */
-    .capsules-container {
+    /* Corong Hadiah (Prize Chute) Di Kiri */
+    .prize-chute {
       position: absolute;
       bottom: 0;
       left: 0;
+      width: 90px;
+      height: 130px;
+      background: linear-gradient(135deg, #1d4ed8 0%, #172554 100%);
+      border-top: 4px solid #60a5fa;
+      border-right: 4px solid #60a5fa;
+      border-top-right-radius: 18px;
+      box-shadow: inset -6px 6px 14px rgba(0,0,0,0.6);
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #93c5fd;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .prize-chute i {
+      font-size: 1.6rem;
+      color: #facc15;
+      margin-bottom: 4px;
+      animation: bounceChute 1.8s infinite alternate;
+    }
+
+    /* Bak Timbunan Patung Maskot Lucu */
+    .plushie-pit {
+      position: absolute;
+      bottom: 0;
+      left: 90px;
       right: 0;
-      height: 110px;
-      background: rgba(255, 255, 255, 0.3);
+      height: 125px;
       display: flex;
       flex-wrap: wrap-reverse;
       justify-content: center;
       align-content: flex-start;
-      gap: 10px;
-      padding: 10px;
+      gap: 6px;
+      padding: 8px;
+      background: rgba(0,0,0,0.25);
+      border-top-left-radius: 14px;
     }
 
-    .gashapon-capsule {
-      width: 46px;
-      height: 46px;
+    .plushie {
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
-      position: relative;
-      overflow: hidden;
-      border: 2px solid rgba(0,0,0,0.15);
-      box-shadow: 0 5px 10px rgba(0,0,0,0.15), inset 0 -6px 0 rgba(0,0,0,0.15);
-      animation: capsuleWiggle 2.5s ease-in-out infinite alternate;
-    }
-
-    .gashapon-capsule::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 50%;
-      background: rgba(255,255,255,0.45);
-      border-bottom: 2px solid rgba(0,0,0,0.1);
-    }
-
-    .gashapon-capsule::after {
-      content: '';
-      position: absolute;
-      top: 6px;
-      left: 8px;
-      width: 10px;
-      height: 6px;
-      background: #ffffff;
-      border-radius: 50%;
-    }
-
-    /* TEMA BALON 3D */
-    .balloon-board {
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, #fdf2f8 0%, #fae8ff 100%);
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      padding: 20px;
-      position: relative;
-    }
-
-    .realistic-balloon {
-      width: 58px;
-      height: 74px;
-      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-      box-shadow: inset -6px -8px 0 rgba(0,0,0,0.15), 0 10px 15px rgba(0,0,0,0.08);
-      position: relative;
-      cursor: pointer;
-      animation: floatSmooth 3s ease-in-out infinite alternate;
-    }
-
-    .realistic-balloon::before {
-      content: '';
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      width: 12px;
-      height: 20px;
-      background: rgba(255,255,255,0.6);
-      border-radius: 50%;
-      transform: rotate(-30deg);
-    }
-
-    .realistic-balloon::after {
-      content: '';
-      position: absolute;
-      bottom: -16px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 1.5px;
-      height: 18px;
-      background: #94a3b8;
-    }
-
-    /* TEMA KOLAM IKAN 3D */
-    .sea-aquarium {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .seaweed {
-      position: absolute;
-      bottom: 0;
-      font-size: 2.2rem;
-      color: #22c55e;
-      animation: wavePlant 3s ease-in-out infinite alternate;
-    }
-
-    .cute-fish {
-      position: absolute;
-      font-size: 2.4rem;
-      animation: swimFish 7s linear infinite;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
-    }
-
-    .hook-metal {
-      position: absolute;
-      top: -120px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 28px;
-      color: #f1f5f9;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-      transition: top 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* Kontrol & Tombol */
-    .action-btn {
-      width: 100%;
-      margin: 18px 0;
-      padding: 15px 20px;
-      border-radius: 99px;
-      border: none;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: white;
-      font-weight: 800;
-      font-size: 1.05rem;
-      cursor: pointer;
-      box-shadow: 0 8px 24px rgba(244, 114, 182, 0.4);
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 1.8rem;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3), inset -3px -3px 0 rgba(0,0,0,0.2);
+      animation: plushieFloat 2.8s ease-in-out infinite alternate;
+    }
+
+    /* PANEL KAWALAN ARKED BAWAH (CONTROLLER DECK) */
+    .control-panel {
+      margin-top: 12px;
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      border-radius: 20px;
+      padding: 14px 18px;
+      border: 3px solid #3b82f6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: inset 0 3px 0 rgba(255,255,255,0.1), 0 8px 20px rgba(0,0,0,0.4);
+    }
+
+    /* Joystick & Butang Arah */
+    .joystick-group {
+      display: flex;
+      align-items: center;
       gap: 8px;
     }
 
-    .action-btn:disabled {
-      opacity: 0.6;
+    .btn-move {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      border: 3px solid #475569;
+      background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+      color: #f8fafc;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #0f172a, 0 6px 12px rgba(0,0,0,0.3);
+      transition: all 0.1s;
     }
 
-    /* Pengaturan Daftar Nama */
-    .names-manager {
+    .btn-move:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #0f172a;
+      background: #475569;
+    }
+
+    /* Butang Bulat Merah "GRAB" */
+    .btn-grab {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      border: 4px solid #991b1b;
+      background: radial-gradient(circle at 35% 35%, #ef4444 0%, #b91c1c 70%);
+      color: white;
+      font-weight: 900;
+      font-size: 1.05rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 0 #7f1d1d, 0 12px 24px rgba(239, 68, 68, 0.45);
+      transition: all 0.1s;
+    }
+
+    .btn-grab:active {
+      transform: translateY(6px);
+      box-shadow: 0 2px 0 #7f1d1d;
+    }
+
+    .btn-grab:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Pengurusan Senarai Nama Murid */
+    .names-section {
       width: 100%;
-      background: #ffffff;
+      background: rgba(30, 41, 59, 0.85);
       border-radius: 20px;
-      padding: 18px 20px;
-      border: 2px solid var(--border);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.03);
+      padding: 16px 18px;
+      border: 2px solid #475569;
+      margin-top: 16px;
     }
 
-    .names-manager textarea {
+    .names-section textarea {
       width: 100%;
-      height: 90px;
+      height: 80px;
       border-radius: 12px;
-      border: 1.5px solid var(--border);
+      border: 1.5px solid #64748b;
+      background: #0f172a;
+      color: white;
       padding: 10px;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       outline: none;
       margin-top: 8px;
       resize: vertical;
     }
 
-    .row-settings {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 10px;
-      flex-wrap: wrap;
-      gap: 8px;
+    .names-section textarea:focus {
+      border-color: #38bdf8;
     }
 
-    /* Modal Pengumuman Nama */
-    .modal-winner {
+    /* Pop-up Pemenang Arkade */
+    .winner-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.65);
-      backdrop-filter: blur(5px);
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(6px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -412,267 +384,304 @@
       padding: 20px;
     }
 
-    .card-winner {
-      background: white;
-      padding: 32px 24px;
+    .winner-box {
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      padding: 30px 24px;
       border-radius: 28px;
       text-align: center;
       width: 100%;
-      max-width: 360px;
-      border: 4px solid var(--border);
-      box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+      max-width: 380px;
+      border: 4px solid #facc15;
+      box-shadow: 0 20px 50px rgba(250, 204, 21, 0.35);
+      animation: popBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    .card-winner h2 {
+    .winner-box h2 {
       font-size: 2.2rem;
       font-weight: 900;
-      color: var(--primary-hover);
-      margin: 12px 0 20px;
+      color: #facc15;
+      margin: 14px 0 22px;
       word-break: break-word;
+      text-shadow: 0 4px 10px rgba(250, 204, 21, 0.4);
     }
 
-    /* Animasi Pergerakan */
-    @keyframes capsuleWiggle {
-      from { transform: translateY(0) rotate(0deg); }
-      to { transform: translateY(-4px) rotate(4deg); }
+    .btn-next {
+      width: 100%;
+      padding: 12px;
+      border-radius: 99px;
+      border: none;
+      background: linear-gradient(135deg, #f472b6, #a78bfa);
+      color: white;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
     }
-    @keyframes floatSmooth {
-      from { transform: translateY(0) rotate(-3deg); }
-      to { transform: translateY(-16px) rotate(3deg); }
+
+    /* Animasi */
+    @keyframes plushieFloat {
+      from { transform: translateY(0); }
+      to { transform: translateY(-5px); }
     }
-    @keyframes swimFish {
-      0% { left: -20%; transform: scaleX(1); }
-      49% { transform: scaleX(1); }
-      50% { left: 110%; transform: scaleX(-1); }
-      100% { left: -20%; transform: scaleX(-1); }
+    @keyframes bounceChute {
+      from { transform: translateY(0); }
+      to { transform: translateY(-4px); }
     }
-    @keyframes wavePlant {
-      from { transform: rotate(-5deg); }
-      to { transform: rotate(5deg); }
+    @keyframes popBounce {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Bar Navigasi Atas -->
   <header class="header">
     <a href="../index.html" class="btn-back">
       <i class="fa-solid fa-arrow-left"></i> Menu Utama
     </a>
-    <span style="font-weight: 800; color: var(--primary);">BilikBBM</span>
+    <span style="font-weight: 900; color: #facc15; letter-spacing: 0.5px;">🕹️ CLAW MASTER</span>
   </header>
 
-  <!-- Pilihan 3 Tema Visual -->
-  <div class="tabs-bar">
-    <button class="tab-btn active" id="btn-claw" onclick="selectTheme('claw')">🕹️ Arcade Claw</button>
-    <button class="tab-btn" id="btn-balloon" onclick="selectTheme('balloon')">🎈 Pop Balloon</button>
-    <button class="tab-btn" id="btn-fishing" onclick="selectTheme('fishing')">🎣 Deep Fishing</button>
-  </div>
+  <div class="game-wrapper">
+    <!-- RANGKA MESIN KABINET ARKED -->
+    <div class="arcade-frame">
+      <div class="neon-pillar-left"></div>
+      <div class="neon-pillar-right"></div>
 
-  <div class="stage-container">
-    <!-- KABINET ARCADIA UTAMA -->
-    <div class="arcade-machine">
-      <div class="arcade-roof"></div>
-      
-      <div class="glass-box" id="arena-stage">
-        <!-- Visual dimasukkan secara otomatis oleh JavaScript -->
+      <div class="glass-chamber" id="glass-stage">
+        <div class="glass-glare"></div>
+        <div class="top-rail"></div>
+
+        <!-- Mekanisme Derek Kuning Capit -->
+        <div class="crane-carriage" id="crane-unit" style="left: 65%;">
+          <div class="crane-housing"></div>
+          <div class="crane-rope" id="crane-rope"></div>
+          <div class="claw-hub">
+            <div class="claw-leg leg-left" id="leg-left"></div>
+            <div class="claw-leg leg-right" id="leg-right"></div>
+          </div>
+        </div>
+
+        <!-- Corong Hadiah Sisi Kiri -->
+        <div class="prize-chute">
+          <i class="fa-solid fa-gift"></i>
+          <span>PRIZE<br>DROP</span>
+        </div>
+
+        <!-- Bak Patung Comel -->
+        <div class="plushie-pit" id="plushie-container">
+          <!-- Patung dimuatkan oleh JS -->
+        </div>
+      </div>
+
+      <!-- PANEL KAWALAN ARKED (ARAH & BUTANG GRAB) -->
+      <div class="control-panel">
+        <div class="joystick-group">
+          <button class="btn-move" id="btn-left" title="Gerak Kiri"><i class="fa-solid fa-caret-left"></i></button>
+          <button class="btn-move" id="btn-right" title="Gerak Kanan"><i class="fa-solid fa-caret-right"></i></button>
+        </div>
+
+        <button class="btn-grab" id="btn-grab" onclick="triggerGrab()">
+          <span>GRAB</span>
+        </button>
       </div>
     </div>
 
-    <!-- Tombol Tindakan Utama -->
-    <button class="action-btn" id="btn-spin" onclick="executeDraw()">
-      <i class="fa-solid fa-play"></i> Mulakan Cabutan!
-    </button>
-
-    <!-- Tempat Masuk Senarai Nama Murid Langsung -->
-    <div class="names-manager">
+    <!-- PENGURUSAN SENARAI NAMA MURID -->
+    <div class="names-section">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <label style="font-weight: 800; font-size: 0.9rem;">
-          <i class="fa-solid fa-users" style="color: var(--primary);"></i> Senarai Nama Murid:
+        <label style="font-weight: 800; font-size: 0.88rem; color: #e2e8f0;">
+          <i class="fa-solid fa-users" style="color: #facc15;"></i> Senarai Nama Murid:
         </label>
-        <span id="name-count" style="font-size: 0.8rem; font-weight: 800; color: #ec4899;">8 Nama</span>
+        <span id="name-count-pill" style="font-size: 0.78rem; font-weight: 800; color: #f472b6;">8 Nama</span>
       </div>
-      
-      <textarea id="names-text-input" placeholder="Tampal senarai nama di sini (satu nama setiap baris)..." oninput="updateNamesFromInput()"></textarea>
 
-      <div class="row-settings">
-        <label style="font-size: 0.85rem; display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 600;">
-          <input type="checkbox" id="chk-auto-remove" checked>
-          <span>Buang nama selepas terpilih</span>
+      <textarea id="names-box" placeholder="Satu nama setiap baris..." oninput="onNamesChanged()"></textarea>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+        <label style="font-size: 0.82rem; color: #94a3b8; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+          <input type="checkbox" id="chk-remove" checked>
+          <span>Singkir nama yang terpilih</span>
         </label>
-        <button onclick="resetDefaultNames()" style="background: none; border: none; color: #94a3b8; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">
-          Pulih Senarai Asal
+        <button onclick="restoreDefaults()" style="background: none; border: none; color: #38bdf8; font-size: 0.78rem; text-decoration: underline; cursor: pointer;">
+          Reset
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Modal Pemenang Pop-up -->
-  <div class="modal-winner" id="winner-modal">
-    <div class="card-winner">
-      <p style="font-size: 0.85rem; color: #64748b; font-weight: 800; text-transform: uppercase;">🎉 Tahniah Kepada 🎉</p>
-      <h2 id="winner-name-display">-</h2>
-      <button class="action-btn" style="padding: 12px;" onclick="closeModalWinner()">
-        Cabut Seterusnya
-      </button>
+  <!-- POP-UP PEMENANG -->
+  <div class="winner-overlay" id="winner-popup">
+    <div class="winner-box">
+      <p style="font-size: 0.85rem; font-weight: 800; color: #94a3b8; letter-spacing: 1px;">PATUNG TERPILIH UNTUK</p>
+      <h2 id="chosen-name">-</h2>
+      <button class="btn-next" onclick="dismissWinner()">Giliran Seterusnya</button>
     </div>
   </div>
 
   <script>
-    let activeTheme = 'claw';
-    const defaultList = ['Ahmad', 'Sarah', 'Danish', 'Aisyah', 'Chong', 'Muthu', 'Haziq', 'Nurul'];
-    let currentNames = JSON.parse(localStorage.getItem('bbm_names')) || defaultList;
+    const plushieEmojis = ['🐸', '🐰', '🐥', '🐱', '🐙', '🐻', '🐼', '🦊', '🦄', '🐨'];
+    const initialList = ['Ahmad', 'Sarah', 'Danish', 'Aisyah', 'Chong', 'Muthu', 'Haziq', 'Nurul'];
+    let studentNames = JSON.parse(localStorage.getItem('bbm_names')) || initialList;
 
-    function saveNamesToStorage() {
-      localStorage.setItem('bbm_names', JSON.stringify(currentNames));
-      const countEl = document.getElementById('name-count');
-      if (countEl) countEl.textContent = currentNames.length + ' Nama';
+    let cranePosition = 65; // Peratusan dari kiri (30% hingga 85%)
+    let isMoving = false;
+    let isBusy = false;
+    let moveInterval = null;
+
+    const craneUnit = document.getElementById('crane-unit');
+    const craneRope = document.getElementById('crane-rope');
+    const legLeft = document.getElementById('leg-left');
+    const legRight = document.getElementById('leg-right');
+    const btnGrab = document.getElementById('btn-grab');
+
+    function renderPlushies() {
+      const pit = document.getElementById('plushie-container');
+      const colors = ['#f472b6', '#34d399', '#facc15', '#60a5fa', '#a78bfa', '#fb923c'];
+      
+      pit.innerHTML = studentNames.slice(0, 10).map((_, idx) => `
+        <div class="plushie" style="background: ${colors[idx % colors.length]}; animation-delay: ${idx * 0.2}s;">
+          ${plushieEmojis[idx % plushieEmojis.length]}
+        </div>
+      `).join('');
     }
 
-    function updateNamesFromInput() {
-      const val = document.getElementById('names-text-input').value;
-      currentNames = val.split('\n').map(s => s.trim()).filter(Boolean);
-      saveNamesToStorage();
-      renderArena();
+    function syncStorage() {
+      localStorage.setItem('bbm_names', JSON.stringify(studentNames));
+      document.getElementById('name-count-pill').textContent = studentNames.length + ' Nama';
     }
 
-    function resetDefaultNames() {
-      currentNames = [...defaultList];
-      document.getElementById('names-text-input').value = currentNames.join('\n');
-      saveNamesToStorage();
-      renderArena();
+    function onNamesChanged() {
+      const txt = document.getElementById('names-box').value;
+      studentNames = txt.split('\n').map(n => n.trim()).filter(Boolean);
+      syncStorage();
+      renderPlushies();
     }
 
-    function selectTheme(theme) {
-      activeTheme = theme;
-      document.getElementById('btn-claw').classList.toggle('active', theme === 'claw');
-      document.getElementById('btn-balloon').classList.toggle('active', theme === 'balloon');
-      document.getElementById('btn-fishing').classList.toggle('active', theme === 'fishing');
-      renderArena();
+    function restoreDefaults() {
+      studentNames = [...initialList];
+      document.getElementById('names-box').value = studentNames.join('\n');
+      syncStorage();
+      renderPlushies();
     }
 
-    function renderArena() {
-      const stage = document.getElementById('arena-stage');
-      if (!stage) return;
-
-      if (activeTheme === 'claw') {
-        const capsuleColors = ['#f43f5e', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
-        const capsules = currentNames.slice(0, 10).map((_, i) => 
-          `<div class="gashapon-capsule" style="background: ${capsuleColors[i % capsuleColors.length]}; animation-delay: ${i * 0.2}s;"></div>`
-        ).join('');
-
-        stage.innerHTML = `
-          <div class="glass-reflection"></div>
-          <div class="crane-rail"></div>
-          <div class="crane-assembly" id="crane-assembly">
-            <div class="crane-motor"></div>
-            <div class="crane-cable" id="crane-cable"></div>
-            <div class="claw-bracket">
-              <div class="claw-finger-left" id="claw-l"></div>
-              <div class="claw-finger-right" id="claw-r"></div>
-            </div>
-          </div>
-          <div class="capsules-container">${capsules}</div>
-        `;
-      } else if (activeTheme === 'balloon') {
-        const colors = ['#f43f5e', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
-        const balloons = currentNames.slice(0, 8).map((_, i) => 
-          `<div class="realistic-balloon" onclick="executeDraw()" style="background: ${colors[i % colors.length]}; animation-delay: ${i * 0.25}s;"></div>`
-        ).join('');
-
-        stage.innerHTML = `<div class="balloon-board">${balloons}</div>`;
-      } else if (activeTheme === 'fishing') {
-        stage.innerHTML = `
-          <div class="sea-aquarium">
-            <div class="hook-metal" id="metal-hook"><i class="fa-solid fa-anchor"></i></div>
-            <div class="cute-fish" style="top: 25%;"><i class="fa-solid fa-fish" style="color: #fb923c;"></i></div>
-            <div class="cute-fish" style="top: 55%; animation-duration: 8s;"><i class="fa-solid fa-fish-fins" style="color: #f472b6;"></i></div>
-            <div class="seaweed" style="left: 10%;"><i class="fa-solid fa-seedling"></i></div>
-            <div class="seaweed" style="right: 15%; animation-delay: 1s;"><i class="fa-solid fa-seedling"></i></div>
-          </div>
-        `;
-      }
+    // KAWALAN PERGERAKAN CRANE
+    function moveLeft() {
+      if (isBusy || cranePosition <= 30) return;
+      cranePosition -= 3;
+      if (cranePosition < 30) cranePosition = 30;
+      craneUnit.style.left = cranePosition + '%';
     }
 
-    function executeDraw() {
-      if (currentNames.length === 0) {
+    function moveRight() {
+      if (isBusy || cranePosition >= 85) return;
+      cranePosition += 3;
+      if (cranePosition > 85) cranePosition = 85;
+      craneUnit.style.left = cranePosition + '%';
+    }
+
+    // Sambungkan butang tekan/tahan untuk skrin sentuh & tetikus
+    const btnLeft = document.getElementById('btn-left');
+    const btnRight = document.getElementById('btn-right');
+
+    function setupHoldButton(btn, action) {
+      btn.addEventListener('mousedown', () => { action(); moveInterval = setInterval(action, 80); });
+      btn.addEventListener('touchstart', (e) => { e.preventDefault(); action(); moveInterval = setInterval(action, 80); });
+      window.addEventListener('mouseup', () => clearInterval(moveInterval));
+      window.addEventListener('touchend', () => clearInterval(moveInterval));
+    }
+    setupHoldButton(btnLeft, moveLeft);
+    setupHoldButton(btnRight, moveRight);
+
+    // Sambungkan anak panah papan kekunci
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') moveLeft();
+      if (e.key === 'ArrowRight') moveRight();
+      if (e.key === ' ' || e.key === 'Enter') triggerGrab();
+    });
+
+    // MEKANIK GRAB & JATUH KE CORONG HADIAH
+    function triggerGrab() {
+      if (isBusy) return;
+      if (studentNames.length === 0) {
         alert('Sila masukkan sekurang-kurangnya 1 nama murid!');
         return;
       }
 
-      const spinBtn = document.getElementById('btn-spin');
-      spinBtn.disabled = true;
+      isBusy = true;
+      btnGrab.disabled = true;
 
-      const luckyIndex = Math.floor(Math.random() * currentNames.length);
-      const chosenName = currentNames[luckyIndex];
+      const luckyIdx = Math.floor(Math.random() * studentNames.length);
+      const winnerName = studentNames[luckyIdx];
 
-      if (activeTheme === 'claw') {
-        const crane = document.getElementById('crane-assembly');
-        const cable = document.getElementById('crane-cable');
-        const clawL = document.getElementById('claw-l');
-        const clawR = document.getElementById('claw-r');
+      // 1. Kuku Turun Menjunam
+      craneRope.style.height = '165px';
 
-        // Geser ke posisi acak
-        crane.style.left = `${30 + Math.random() * 40}%`;
-        
+      setTimeout(() => {
+        // 2. Kuku Mencengkam Rapat
+        legLeft.style.transform = 'rotate(40deg)';
+        legRight.style.transform = 'rotate(-40deg)';
+
         setTimeout(() => {
-          // Turunkan kabel cakar
-          cable.style.height = '145px';
+          // 3. Kuku Naik Semula ke Atas Sambil Bawa Hadiah
+          craneRope.style.height = '45px';
+
           setTimeout(() => {
-            // Rapatkan cakar seolah mencengkeram
-            clawL.style.transform = 'rotate(35deg)';
-            clawR.style.transform = 'rotate(-35deg)';
+            // 4. Bergerak ke Arah Corong Hadiah (Prize Drop di Kiri)
+            craneUnit.style.transition = 'left 1s cubic-bezier(0.4, 0, 0.2, 1)';
+            craneUnit.style.left = '16%';
+
             setTimeout(() => {
-              // Tarik ke atas kembali
-              cable.style.height = '50px';
+              // 5. Buka Kuku & Lepaskan Hadiah ke Corong
+              legLeft.style.transform = 'rotate(26deg)';
+              legRight.style.transform = 'rotate(-26deg)';
+
               setTimeout(() => {
-                announceWinner(chosenName, luckyIndex);
-                clawL.style.transform = 'rotate(20deg)';
-                clawR.style.transform = 'rotate(-20deg)';
-              }, 700);
-            }, 500);
-          }, 700);
-        }, 600);
-      } else if (activeTheme === 'fishing') {
-        const hook = document.getElementById('metal-hook');
-        hook.style.top = '140px';
-        setTimeout(() => {
-          hook.style.top = '-120px';
-          setTimeout(() => {
-            announceWinner(chosenName, luckyIndex);
-          }, 600);
-        }, 700);
-      } else {
-        announceWinner(chosenName, luckyIndex);
-      }
+                // 6. Paparkan Pemenang dengan Konfeti
+                announceWinner(winnerName, luckyIdx);
+              }, 400);
+            }, 1000);
+          }, 800);
+        }, 500);
+      }, 700);
     }
 
-    function announceWinner(name, index) {
+    function announceWinner(name, idx) {
       if (window.confetti) {
-        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        confetti({ particleCount: 110, spread: 75, origin: { y: 0.6 } });
       }
 
-      document.getElementById('winner-name-display').textContent = name;
-      document.getElementById('winner-modal').style.display = 'flex';
+      document.getElementById('chosen-name').textContent = name;
+      document.getElementById('winner-popup').style.display = 'flex';
 
-      if (document.getElementById('chk-auto-remove').checked) {
-        currentNames.splice(index, 1);
-        document.getElementById('names-text-input').value = currentNames.join('\n');
-        saveNamesToStorage();
+      if (document.getElementById('chk-remove').checked) {
+        studentNames.splice(idx, 1);
+        document.getElementById('names-box').value = studentNames.join('\n');
+        syncStorage();
       }
 
-      document.getElementById('btn-spin').disabled = false;
-      renderArena();
+      renderPlushies();
     }
 
-    function closeModalWinner() {
-      document.getElementById('winner-modal').style.display = 'none';
-      renderArena();
+    function dismissWinner() {
+      document.getElementById('winner-popup').style.display = 'none';
+      
+      // Pulihkan posisi asal crane
+      cranePosition = 65;
+      craneUnit.style.transition = 'left 0.7s ease';
+      craneUnit.style.left = '65%';
+      
+      setTimeout(() => {
+        craneUnit.style.transition = 'left 0.15s linear';
+        isBusy = false;
+        btnGrab.disabled = false;
+      }, 700);
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('names-text-input').value = currentNames.join('\n');
-      saveNamesToStorage();
-      renderArena();
+      document.getElementById('names-box').value = studentNames.join('\n');
+      syncStorage();
+      renderPlushies();
     });
   </script>
 </body>
