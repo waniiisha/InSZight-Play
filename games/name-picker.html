@@ -64,18 +64,17 @@
       flex: 1;
     }
 
-    /* RANGKA KABINET ARKED */
+    /* KABINET ARKED 3D */
     .arcade-chassis {
       width: 100%;
       background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
       border-radius: 28px;
       border: 4px solid #1e40af;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.6), inset 0 4px 0 #93c5fd, inset 0 -6px 0 #1e3a8a;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.65), inset 0 5px 0 #93c5fd, inset 0 -7px 0 #1e3a8a;
       padding: 12px;
       position: relative;
     }
 
-    /* Tiang Lampu LED Neon */
     .led-strip-l, .led-strip-r {
       position: absolute;
       top: 14px;
@@ -83,7 +82,7 @@
       width: 12px;
       border-radius: 99px;
       background: repeating-linear-gradient(180deg, #fde047, #fde047 12px, #2563eb 12px, #2563eb 24px);
-      box-shadow: 0 0 12px #facc15;
+      box-shadow: 0 0 14px #facc15;
       z-index: 10;
     }
     .led-strip-l { left: 4px; }
@@ -93,24 +92,39 @@
     .glass-room {
       width: 100%;
       height: 350px;
-      background: linear-gradient(180deg, #0284c7 0%, #0369a1 40%, #082f49 100%);
+      background: linear-gradient(180deg, #0369a1 0%, #075985 45%, #082f49 100%);
       border-radius: 18px;
       position: relative;
       overflow: hidden;
       border: 3px solid #38bdf8;
-      box-shadow: inset 0 0 40px rgba(0,0,0,0.7);
+      box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+      perspective: 800px;
     }
 
-    /* Silau Kaca Depan */
+    /* Lantai Bergrid 3D Isometrik */
+    .isometric-floor {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 140px;
+      background: linear-gradient(180deg, rgba(30, 27, 75, 0.4) 0%, rgba(15, 23, 42, 0.8) 100%);
+      background-size: 24px 24px;
+      background-image: 
+        linear-gradient(to right, rgba(56, 189, 248, 0.15) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(56, 189, 248, 0.15) 1px, transparent 1px);
+      border-top: 2px solid rgba(56, 189, 248, 0.3);
+      z-index: 2;
+    }
+
     .glass-reflection {
       position: absolute;
       inset: 0;
-      background: linear-gradient(125deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 30%, transparent 60%);
+      background: linear-gradient(125deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.05) 35%, transparent 65%);
       pointer-events: none;
-      z-index: 20;
+      z-index: 25;
     }
 
-    /* Rel Atas Metalik */
     .rail-bar {
       position: absolute;
       top: 0;
@@ -141,7 +155,7 @@
       background: linear-gradient(180deg, #facc15 0%, #ca8a04 100%);
       border-radius: 8px 8px 4px 4px;
       border: 2.5px solid #713f12;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.5);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -161,21 +175,24 @@
       transition: height 0.8s cubic-bezier(0.3, 0, 0.2, 1);
     }
 
-    /* Cakar Kuning 3-Cabang */
+    /* Pincers & Held Doll Container */
     .claw-pincers {
-      width: 44px;
-      height: 38px;
+      width: 48px;
+      height: 42px;
       position: relative;
+      display: flex;
+      justify-content: center;
     }
 
     .pincer-leg {
       position: absolute;
       width: 8px;
-      height: 36px;
+      height: 38px;
       background: linear-gradient(180deg, #fef08a 0%, #eab308 60%, #a16207 100%);
       border: 1.5px solid #713f12;
       border-radius: 4px;
       transition: transform 0.3s ease;
+      z-index: 2;
     }
 
     .pincer-l {
@@ -194,6 +211,18 @@
       border-bottom-right-radius: 14px;
     }
 
+    /* Patung Yang Dicengkam Di Dalam Kuku */
+    .held-doll {
+      position: absolute;
+      top: 10px;
+      width: 44px;
+      height: 44px;
+      z-index: 1;
+      display: none;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+      animation: wiggleInClaw 0.5s ease-in-out infinite alternate;
+    }
+
     /* CORONG HADIAH KIRI (PRIZE CHUTE) */
     .prize-drop {
       position: absolute;
@@ -205,8 +234,8 @@
       border-top: 4px solid #60a5fa;
       border-right: 4px solid #60a5fa;
       border-top-right-radius: 20px;
-      box-shadow: inset -6px 6px 16px rgba(0,0,0,0.7);
-      z-index: 5;
+      box-shadow: inset -8px 8px 18px rgba(0,0,0,0.7);
+      z-index: 6;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -224,36 +253,35 @@
       filter: drop-shadow(0 2px 8px #facc15);
     }
 
-    /* TIMBUNAN PATUNG HAIWAN 3D */
+    /* TIMBUNAN PATUNG HAIWAN 3D DI DASAR */
     .plushie-ground {
       position: absolute;
-      bottom: 0;
-      left: 95px;
-      right: 0;
-      height: 140px;
+      bottom: 6px;
+      left: 100px;
+      right: 8px;
+      height: 130px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-      padding: 8px 6px 4px;
-      background: rgba(0,0,0,0.3);
-      border-top-left-radius: 16px;
+      gap: 8px;
+      padding: 6px;
+      z-index: 4;
     }
 
     .animal-doll {
-      width: 60px;
-      height: 60px;
+      width: 54px;
+      height: 54px;
       position: relative;
-      cursor: pointer;
-      filter: drop-shadow(0 6px 8px rgba(0,0,0,0.4));
-      animation: dollFloat 3s ease-in-out infinite alternate;
+      filter: drop-shadow(0 8px 10px rgba(0,0,0,0.5));
+      animation: dollIdle 2.5s ease-in-out infinite alternate;
+      transition: opacity 0.3s, transform 0.3s;
     }
 
-    .animal-doll svg {
+    .animal-doll svg, .held-doll svg {
       width: 100%;
       height: 100%;
     }
 
-    /* DEK KAWALAN JOYSTICK & BUTANG GRAB */
+    /* DEK KAWALAN */
     .arcade-deck {
       margin-top: 10px;
       background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
@@ -388,9 +416,13 @@
       cursor: pointer;
     }
 
-    @keyframes dollFloat {
-      from { transform: translateY(0) rotate(-2deg); }
-      to { transform: translateY(-4px) rotate(2deg); }
+    @keyframes dollIdle {
+      from { transform: translateY(0) scale(1); }
+      to { transform: translateY(-4px) scale(1.02); }
+    }
+    @keyframes wiggleInClaw {
+      from { transform: rotate(-4deg); }
+      to { transform: rotate(4deg); }
     }
   </style>
 </head>
@@ -404,7 +436,6 @@
   </header>
 
   <div class="stage-wrapper">
-    <!-- KABINET ARKED UTAMA -->
     <div class="arcade-chassis">
       <div class="led-strip-l"></div>
       <div class="led-strip-r"></div>
@@ -412,6 +443,7 @@
       <div class="glass-room">
         <div class="glass-reflection"></div>
         <div class="rail-bar"></div>
+        <div class="isometric-floor"></div>
 
         <!-- Mekanisme Cakar Kuning Metalik -->
         <div class="claw-unit" id="claw-unit" style="left: 65%;">
@@ -420,6 +452,8 @@
           <div class="claw-pincers">
             <div class="pincer-leg pincer-l" id="pin-l"></div>
             <div class="pincer-leg pincer-r" id="pin-r"></div>
+            <!-- Patung Yang Terangkat Bersama Cakar -->
+            <div class="held-doll" id="held-doll"></div>
           </div>
         </div>
 
@@ -429,11 +463,11 @@
           <span>PRIZE<br>DROP</span>
         </div>
 
-        <!-- Timbunan Patung Haiwan 3D Berseni SVG -->
+        <!-- Timbunan Patung Haiwan 3D -->
         <div class="plushie-ground" id="dolls-container"></div>
       </div>
 
-      <!-- DEK KAWALAN (JOYSTICK & BUTANG GRAB) -->
+      <!-- DEK KAWALAN -->
       <div class="arcade-deck">
         <div class="stick-arrows">
           <button class="btn-steer" id="btn-left"><i class="fa-solid fa-arrow-left"></i></button>
@@ -472,16 +506,17 @@
   <!-- POP-UP PEMENANG -->
   <div class="modal-winner" id="winner-modal">
     <div class="winner-sheet">
-      <p style="font-size: 0.85rem; font-weight: 800; color: #94a3b8; letter-spacing: 1px;">PATUNG TERPILIH UNTUK</p>
+      <div id="winner-doll-avatar" style="width: 70px; height: 70px; margin: 0 auto 10px;"></div>
+      <p style="font-size: 0.85rem; font-weight: 800; color: #94a3b8; letter-spacing: 1px;">PATUNG BERJAYA DITANGKAP UNTUK</p>
       <h2 id="winner-name">-</h2>
       <button class="btn-again" onclick="closeWinner()">Giliran Seterusnya</button>
     </div>
   </div>
 
   <script>
-    // Koleksi Patung Haiwan Berbentuk SVG 3D (Kucing Pink, Katak Hijau, Anak Ayam Kuning, Arnab Biru)
+    // Koleksi Patung Haiwan SVG 3D
     const animalSVGs = [
-      // 1. Kucing Pink Gebu (Cat)
+      // 1. Kucing Merah Jambu
       `<svg viewBox="0 0 100 100">
         <circle cx="28" cy="28" r="14" fill="#ec4899"/>
         <circle cx="28" cy="28" r="8" fill="#fbcfe8"/>
@@ -489,60 +524,49 @@
         <circle cx="72" cy="28" r="8" fill="#fbcfe8"/>
         <circle cx="50" cy="56" r="36" fill="#f472b6"/>
         <circle cx="50" cy="52" r="30" fill="#f472b6"/>
-        <!-- Mata & Pipi -->
         <circle cx="38" cy="48" r="5" fill="#1e1b4b"/><circle cx="39" cy="46" r="2" fill="#ffffff"/>
         <circle cx="62" cy="48" r="5" fill="#1e1b4b"/><circle cx="63" cy="46" r="2" fill="#ffffff"/>
         <circle cx="32" cy="56" r="4" fill="#f43f5e" opacity="0.6"/>
         <circle cx="68" cy="56" r="4" fill="#f43f5e" opacity="0.6"/>
-        <!-- Hidung & Mulut -->
         <polygon points="50,54 47,57 53,57" fill="#be185d"/>
         <path d="M 46 60 Q 50 63 54 60" stroke="#be185d" stroke-width="2" fill="none"/>
       </svg>`,
 
-      // 2. Katak Hijau Comel (Frog)
+      // 2. Katak Hijau
       `<svg viewBox="0 0 100 100">
-        <!-- Mata Menonjol -->
         <circle cx="32" cy="30" r="14" fill="#22c55e"/>
         <circle cx="32" cy="30" r="8" fill="#ffffff"/>
         <circle cx="32" cy="30" r="4" fill="#0f172a"/>
         <circle cx="68" cy="30" r="14" fill="#22c55e"/>
         <circle cx="68" cy="30" r="8" fill="#ffffff"/>
         <circle cx="68" cy="30" r="4" fill="#0f172a"/>
-        <!-- Badan -->
         <ellipse cx="50" cy="58" rx="36" ry="30" fill="#4ade80"/>
         <ellipse cx="50" cy="62" rx="24" ry="18" fill="#bbf7d0"/>
-        <!-- Pipi & Mulut Senyum -->
         <circle cx="32" cy="58" r="4" fill="#f472b6" opacity="0.7"/>
         <circle cx="68" cy="58" r="4" fill="#f472b6" opacity="0.7"/>
         <path d="M 40 62 Q 50 72 60 62" stroke="#15803d" stroke-width="3" stroke-linecap="round" fill="none"/>
       </svg>`,
 
-      // 3. Anak Ayam Kuning Bulat (Chick)
+      // 3. Anak Ayam Kuning
       `<svg viewBox="0 0 100 100">
         <circle cx="50" cy="52" r="36" fill="#facc15"/>
         <circle cx="50" cy="48" r="32" fill="#fde047"/>
-        <!-- Sayap -->
         <ellipse cx="16" cy="56" rx="6" ry="12" fill="#eab308" transform="rotate(20 16 56)"/>
         <ellipse cx="84" cy="56" rx="6" ry="12" fill="#eab308" transform="rotate(-20 84 56)"/>
-        <!-- Mata -->
         <circle cx="38" cy="46" r="4" fill="#0f172a"/><circle cx="39" cy="45" r="1.5" fill="#ffffff"/>
         <circle cx="62" cy="46" r="4" fill="#0f172a"/><circle cx="63" cy="45" r="1.5" fill="#ffffff"/>
         <circle cx="32" cy="52" r="4" fill="#fb923c" opacity="0.6"/>
         <circle cx="68" cy="52" r="4" fill="#fb923c" opacity="0.6"/>
-        <!-- Paruh Oren -->
         <polygon points="50,48 44,56 56,56" fill="#ea580c"/>
       </svg>`,
 
-      // 4. Arnab Ungu Pastel (Bunny)
+      // 4. Arnab Ungu
       `<svg viewBox="0 0 100 100">
-        <!-- Telinga Panjang -->
         <ellipse cx="36" cy="22" rx="7" ry="20" fill="#c084fc"/>
         <ellipse cx="36" cy="22" rx="4" ry="14" fill="#fbcfe8"/>
         <ellipse cx="64" cy="22" rx="7" ry="20" fill="#c084fc"/>
         <ellipse cx="64" cy="22" rx="4" ry="14" fill="#fbcfe8"/>
-        <!-- Muka -->
         <circle cx="50" cy="56" r="34" fill="#d8b4fe"/>
-        <!-- Mata & Hidung -->
         <circle cx="38" cy="52" r="4.5" fill="#1e1b4b"/><circle cx="39" cy="50" r="1.5" fill="#ffffff"/>
         <circle cx="62" cy="52" r="4.5" fill="#1e1b4b"/><circle cx="63" cy="50" r="1.5" fill="#ffffff"/>
         <circle cx="32" cy="58" r="4" fill="#f43f5e" opacity="0.5"/>
@@ -554,20 +578,22 @@
     const defaultNames = ['Ahmad', 'Sarah', 'Danish', 'Aisyah', 'Chong', 'Muthu', 'Haziq', 'Nurul'];
     let studentList = JSON.parse(localStorage.getItem('bbm_names')) || defaultNames;
 
-    let clawX = 65; // Posisi mendatar (30% ke 85%)
+    let clawX = 65;
     let busy = false;
     let holdTimer = null;
+    let currentSelectedDollSvg = '';
 
     const clawUnit = document.getElementById('claw-unit');
     const craneWire = document.getElementById('crane-wire');
     const pinL = document.getElementById('pin-l');
     const pinR = document.getElementById('pin-r');
+    const heldDoll = document.getElementById('held-doll');
     const btnGrab = document.getElementById('btn-grab');
 
     function renderDolls() {
       const container = document.getElementById('dolls-container');
       container.innerHTML = studentList.slice(0, 6).map((_, i) => `
-        <div class="animal-doll" style="animation-delay: ${i * 0.3}s;">
+        <div class="animal-doll" id="ground-doll-${i}" style="animation-delay: ${i * 0.3}s;">
           ${animalSVGs[i % animalSVGs.length]}
         </div>
       `).join('');
@@ -592,7 +618,6 @@
       renderDolls();
     }
 
-    // KAWALAN PERGERAKAN CRANE
     function goLeft() {
       if (busy || clawX <= 30) return;
       clawX -= 3;
@@ -622,7 +647,7 @@
       if (e.key === ' ' || e.key === 'Enter') actionGrab();
     });
 
-    // MEKANIK TURUN DALAM HINGGA KENA PATUNG & CENGKAM
+    // MEKANIK GRAB & ANGKAT PATUNG SEBENAR
     function actionGrab() {
       if (busy) return;
       if (studentList.length === 0) {
@@ -635,45 +660,58 @@
 
       const luckyIndex = Math.floor(Math.random() * studentList.length);
       const winnerName = studentList[luckyIndex];
+      currentSelectedDollSvg = animalSVGs[luckyIndex % animalSVGs.length];
 
-      // 1. Tali Turun Sepenuhnya Hingga 220px (Kena Kepala Patung)
+      // 1. Tali Turun Sepenuhnya Mencecah Dasar (220px)
       craneWire.style.height = '220px';
 
       setTimeout(() => {
-        // 2. Kuku Mencengkam Rapat Sekeliling Patung
-        pinL.style.transform = 'rotate(42deg)';
-        pinR.style.transform = 'rotate(-42deg)';
+        // 2. Kuku Mencengkam Rapat & Patung Ditangkap!
+        pinL.style.transform = 'rotate(45deg)';
+        pinR.style.transform = 'rotate(-45deg)';
+
+        // Pasang patung ke dalam kuku cakar
+        heldDoll.innerHTML = currentSelectedDollSvg;
+        heldDoll.style.display = 'block';
+
+        // Sembunyikan satu patung di lantai untuk efek seolah ia terangkat
+        const groundDoll = document.getElementById(`ground-doll-${luckyIndex % 6}`);
+        if (groundDoll) groundDoll.style.opacity = '0';
 
         setTimeout(() => {
-          // 3. Tarik Naik Semula ke Atas Bersama Hadiah
+          // 3. Tarik Naik Semula Bersama Patung
           craneWire.style.height = '40px';
 
           setTimeout(() => {
-            // 4. Bergerak ke Arah Corong Hadiah Sisi Kiri (16%)
+            // 4. Bergerak ke Arah Corong Hadiah Kiri (16%)
             clawUnit.style.transition = 'left 1s cubic-bezier(0.4, 0, 0.2, 1)';
             clawUnit.style.left = '16%';
 
             setTimeout(() => {
-              // 5. Buka Kuku & Lepaskan Patung ke Dalam Corong
+              // 5. Buka Kuku & Patung Jatuh ke Corong Hadiah
               pinL.style.transform = 'rotate(26deg)';
               pinR.style.transform = 'rotate(-26deg)';
+              heldDoll.style.transition = 'top 0.4s ease-in, opacity 0.4s ease-in';
+              heldDoll.style.top = '120px';
+              heldDoll.style.opacity = '0';
 
               setTimeout(() => {
                 // 6. Paparkan Pemenang dengan Konfeti
                 showWinner(winnerName, luckyIndex);
-              }, 400);
-            }, 1000);
-          }, 800);
-        }, 500);
-      }, 800);
+              }, 450);
+            }, 1050);
+          }, 850);
+        }, 550);
+      }, 850);
     }
 
     function showWinner(name, idx) {
       if (window.confetti) {
-        confetti({ particleCount: 110, spread: 75, origin: { y: 0.6 } });
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
       }
 
       document.getElementById('winner-name').textContent = name;
+      document.getElementById('winner-doll-avatar').innerHTML = currentSelectedDollSvg;
       document.getElementById('winner-modal').style.display = 'flex';
 
       if (document.getElementById('chk-auto').checked) {
@@ -687,6 +725,12 @@
 
     function closeWinner() {
       document.getElementById('winner-modal').style.display = 'none';
+
+      // Reset held doll styles
+      heldDoll.style.display = 'none';
+      heldDoll.style.top = '10px';
+      heldDoll.style.opacity = '1';
+      heldDoll.style.transition = 'none';
 
       // Pulangkan kren ke posisi tengah
       clawX = 65;
