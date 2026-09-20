@@ -326,6 +326,7 @@
       <p>Peralatan PdP gamifikasi bilik darjah serba lengkap. Berfungsi dalam talian mahupun luar talian!</p>
     </div>
 
+    <!-- Status Pengguna Aktif -->
     <div class="user-banner" id="user-banner">
       <div>
         <h4 id="user-display-name" style="font-weight: 800; font-size: 1.1rem;">Cikgu</h4>
@@ -390,6 +391,7 @@
       </div>
     </div>
 
+    <!-- Panel Khas Admin -->
     <div class="admin-section" id="admin-panel">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h2 style="color: #9d174d; font-size: 1.3rem;"><i class="fa-solid fa-user-shield"></i> Papan Kawalan Superadmin</h2>
@@ -451,36 +453,65 @@
 
     let currentMode = 'login';
     let currentUserProfile = null;
+    const ADMIN_EMAIL = 'mochitofudecats@gmail.com';
 
+    // Semak dan pantau status sesi pengguna secara langsung
     async function initSession() {
       const { data: { session } } = await db.auth.getSession();
       if (session && session.user) {
-        await loadUserProfile(session.user.id);
+        await loadUserProfile(session.user);
       } else {
         renderLoggedOut();
       }
+
+      // Dengar sebarang perubahan login/logout automatik
+      db.auth.onAuthStateChange(async (event, session) => {
+        if (session && session.user) {
+          await loadUserProfile(session.user);
+        } else {
+          renderLoggedOut();
+        }
+      });
     }
 
-    async function loadUserProfile(userId) {
-      const { data: profile, error } = await db
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
+    async function loadUserProfile(authUser) {
+      try {
+        const { data: profile, error } = await db
+          .from('profiles')
+          .select('*')
+          .eq('id', authUser.id)
+          .maybeSingle();
 
-      if (profile) {
-        currentUserProfile = profile;
-        renderLoggedIn(profile);
-        if (profile.role === 'admin') {
+        if (profile) {
+          currentUserProfile = profile;
+        } else {
+          // Fallback segera jika rekod profil belum wujud dalam table
+          const isAdmin = (authUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase());
+          currentUserProfile = {
+            id: authUser.id,
+            email: authUser.email,
+            username: authUser.user_metadata?.username || 'Cikgu',
+            role: isAdmin ? 'admin' : 'user',
+            plan: isAdmin ? 'premium' : 'free'
+          };
+        }
+
+        renderLoggedIn(currentUserProfile);
+
+        if (currentUserProfile.role === 'admin' || authUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
           loadAdminDashboard();
         }
+      } catch (err) {
+        console.error('Error profile:', err);
       }
     }
 
     function renderLoggedIn(profile) {
-      document.getElementById('nav-actions').style.display = 'none';
+      const navActions = document.getElementById('nav-actions');
       const banner = document.getElementById('user-banner');
-      banner.style.display = 'flex';
+
+      if (navActions) navActions.style.display = 'none';
+      if (banner) banner.style.display = 'flex';
 
       document.getElementById('user-display-name').textContent = profile.username || 'Cikgu';
       document.getElementById('user-display-email').textContent = profile.email;
@@ -500,9 +531,13 @@
 
     function renderLoggedOut() {
       currentUserProfile = null;
-      document.getElementById('nav-actions').style.display = 'flex';
-      document.getElementById('user-banner').style.display = 'none';
-      document.getElementById('admin-panel').style.display = 'none';
+      const navActions = document.getElementById('nav-actions');
+      const banner = document.getElementById('user-banner');
+      const adminPanel = document.getElementById('admin-panel');
+
+      if (navActions) navActions.style.display = 'flex';
+      if (banner) banner.style.display = 'none';
+      if (adminPanel) adminPanel.style.display = 'none';
     }
 
     function openModal(mode) {
@@ -543,7 +578,6 @@
 
       try {
         if (currentMode === 'register') {
-          // 1. Daftar akaun
           const { data, error } = await db.auth.signUp({
             email: email,
             password: password,
@@ -557,25 +591,12 @@
             return;
           }
 
-          // 2. Jika sesi belum terbentuk secara automatik, terus log masuk di belakang tabir
           if (!data.session) {
-            const { error: signInError } = await db.auth.signInWithPassword({
-              email: email,
-              password: password
-            });
-
-            if (signInError) {
-              alert('Pendaftaran berjaya tetapi pengesahan emel diperlukan. Sila semak tetapan Providers > Email di Supabase.');
-              submitBtn.textContent = 'Daftar & Masuk';
-              submitBtn.disabled = false;
-              return;
-            }
+            await db.auth.signInWithPassword({ email: email, password: password });
           }
 
           closeModal();
-          await initSession();
         } else {
-          // Log masuk biasa
           const { data, error } = await db.auth.signInWithPassword({
             email: email,
             password: password
@@ -589,17 +610,11 @@
           }
 
           closeModal();
-          await initSession();
         }
       } catch (err) {
-        alert('Ralat tidak dijangka: ' + err.message);
+        alert('Ralat sistem: ' + err.message);
       } finally {
         submitBtn.disabled = false;
-        if (currentMode === 'register') {
-          submitBtn.textContent = 'Daftar & Masuk';
-        } else {
-          submitBtn.textContent = 'Masuk Sekarang';
-        }
       }
     }
 
@@ -609,12 +624,13 @@
     }
 
     async function loadAdminDashboard() {
-      document.getElementById('admin-panel').style.display = 'block';
+      const adminPanel = document.getElementById('admin-panel');
+      if (adminPanel) adminPanel.style.display = 'block';
       const tbody = document.getElementById('users-list-body');
 
       const { data: users, error } = await db.from('profiles').select('*');
       if (error) {
-        tbody.innerHTML = `<tr><td colspan="3" style="color:red;">Ralat: ${error.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="3" style="color:red; padding:10px;">Ralat memuat senarai: ${error.message}</td></tr>`;
         return;
       }
 
