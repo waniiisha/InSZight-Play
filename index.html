@@ -42,7 +42,6 @@
       flex-direction: column;
     }
 
-    /* Navbar */
     .navbar {
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
@@ -111,7 +110,6 @@
       background: var(--primary-light);
     }
 
-    /* Main Container */
     .container {
       max-width: 1140px;
       margin: 0 auto;
@@ -145,12 +143,11 @@
       margin: 0 auto;
     }
 
-    /* Status Bar */
     .user-banner {
       background: white;
       border-radius: var(--radius);
       padding: 18px 24px;
-      display: none; /* Papar bila login */
+      display: none;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 36px;
@@ -171,7 +168,6 @@
     .badge-premium { background: #fef08a; color: #854d0e; }
     .badge-admin { background: #fbcfe8; color: #9d174d; }
 
-    /* Game Cards Grid */
     .section-title {
       font-size: 1.4rem;
       font-weight: 800;
@@ -246,7 +242,6 @@
       border-radius: 99px;
     }
 
-    /* Modal / Popup */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -301,7 +296,6 @@
       border-color: var(--primary);
     }
 
-    /* Admin Panel Section */
     .admin-section {
       display: none;
       background: #fff;
@@ -315,7 +309,6 @@
 </head>
 <body>
 
-  <!-- Navbar -->
   <nav class="navbar">
     <a href="#" class="brand">
       <i class="fa-solid fa-shapes"></i>
@@ -328,13 +321,11 @@
   </nav>
 
   <div class="container">
-    <!-- Hero Banner -->
     <div class="hero">
       <h1>Pusat Interaktif <span>BBM Digital</span></h1>
       <p>Peralatan PdP gamifikasi bilik darjah serba lengkap. Berfungsi dalam talian mahupun luar talian!</p>
     </div>
 
-    <!-- Status Pengguna Aktif -->
     <div class="user-banner" id="user-banner">
       <div>
         <h4 id="user-display-name" style="font-weight: 800; font-size: 1.1rem;">Cikgu</h4>
@@ -346,14 +337,12 @@
       </div>
     </div>
 
-    <!-- Senarai Permainan -->
     <div class="section-title">
       <i class="fa-solid fa-gamepad" style="color: var(--primary-hover);"></i>
       <span>Pilih Permainan PdP</span>
     </div>
 
     <div class="grid">
-      <!-- Game 1: Name Picker (Free) -->
       <div class="game-card">
         <div>
           <div class="game-icon"><i class="fa-solid fa-dharmachakra"></i></div>
@@ -365,7 +354,6 @@
         </button>
       </div>
 
-      <!-- Game 2: Tic-Tac-Toe Soalan (Free) -->
       <div class="game-card">
         <div>
           <div class="game-icon"><i class="fa-solid fa-xmarks-lines"></i></div>
@@ -377,7 +365,6 @@
         </button>
       </div>
 
-      <!-- Game 3: Lucky Box (Premium) -->
       <div class="game-card">
         <span class="tag-premium"><i class="fa-solid fa-crown"></i> VIP</span>
         <div>
@@ -390,7 +377,6 @@
         </button>
       </div>
 
-      <!-- Game 4: Ular & Tangga (Premium) -->
       <div class="game-card">
         <span class="tag-premium"><i class="fa-solid fa-crown"></i> VIP</span>
         <div>
@@ -404,7 +390,6 @@
       </div>
     </div>
 
-    <!-- Panel Khas Admin (Hanya muncul jika akaun admin login) -->
     <div class="admin-section" id="admin-panel">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h2 style="color: #9d174d; font-size: 1.3rem;"><i class="fa-solid fa-user-shield"></i> Papan Kawalan Superadmin</h2>
@@ -428,7 +413,6 @@
     </div>
   </div>
 
-  <!-- Modal Log Masuk & Daftar -->
   <div class="modal-overlay" id="auth-modal">
     <div class="modal-card">
       <h2 id="modal-title">Log Masuk</h2>
@@ -459,9 +443,7 @@
     </div>
   </div>
 
-  <!-- Inisialisasi Supabase & Logik App -->
   <script>
-    // Konfigurasi Supabase
     const SUPABASE_URL = 'https://wxrfxobmnruvutiquxlt.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4cmZ4b2JtbnJ1dnV0aXF1eGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5MDkxMjAsImV4cCI6MjEwNTQ4NTEyMH0.t_HUbFTJP6eJHZ_-7Fl020tXhW-cXPACFI6vnvwsRQc';
     
@@ -470,10 +452,9 @@
     let currentMode = 'login';
     let currentUserProfile = null;
 
-    // Semak status sesi semasa laman dibuka
     async function initSession() {
       const { data: { session } } = await db.auth.getSession();
-      if (session) {
+      if (session && session.user) {
         await loadUserProfile(session.user.id);
       } else {
         renderLoggedOut();
@@ -524,7 +505,6 @@
       document.getElementById('admin-panel').style.display = 'none';
     }
 
-    // Modal Control
     function openModal(mode) {
       currentMode = mode;
       document.getElementById('auth-modal').style.display = 'flex';
@@ -534,7 +514,7 @@
 
       if (mode === 'register') {
         title.textContent = 'Cipta Akaun Cikgu';
-        submitBtn.textContent = 'Daftar Sekarang';
+        submitBtn.textContent = 'Daftar & Masuk';
         groupUser.style.display = 'block';
       } else {
         title.textContent = 'Log Masuk Cikgu';
@@ -547,38 +527,78 @@
       document.getElementById('auth-modal').style.display = 'none';
     }
 
-    // Auth Submission
     async function submitAuth() {
       const email = document.getElementById('auth-email').value.trim();
       const password = document.getElementById('auth-password').value.trim();
       const username = document.getElementById('auth-username').value.trim();
+      const submitBtn = document.getElementById('auth-submit-btn');
 
       if (!email || !password) {
         alert('Sila masukkan emel dan kata laluan!');
         return;
       }
 
-      if (currentMode === 'register') {
-        const { data, error } = await db.auth.signUp({
-          email: email,
-          password: password,
-          options: { data: { username: username || 'Cikgu' } }
-        });
-        if (error) alert('Ralat daftar: ' + error.message);
-        else {
-          alert('Pendaftaran berjaya! Sistem akan log anda masuk.');
+      submitBtn.textContent = 'Sila tunggu...';
+      submitBtn.disabled = true;
+
+      try {
+        if (currentMode === 'register') {
+          // 1. Daftar akaun
+          const { data, error } = await db.auth.signUp({
+            email: email,
+            password: password,
+            options: { data: { username: username || 'Cikgu' } }
+          });
+
+          if (error) {
+            alert('Ralat daftar: ' + error.message);
+            submitBtn.textContent = 'Daftar & Masuk';
+            submitBtn.disabled = false;
+            return;
+          }
+
+          // 2. Jika sesi belum terbentuk secara automatik, terus log masuk di belakang tabir
+          if (!data.session) {
+            const { error: signInError } = await db.auth.signInWithPassword({
+              email: email,
+              password: password
+            });
+
+            if (signInError) {
+              alert('Pendaftaran berjaya tetapi pengesahan emel diperlukan. Sila semak tetapan Providers > Email di Supabase.');
+              submitBtn.textContent = 'Daftar & Masuk';
+              submitBtn.disabled = false;
+              return;
+            }
+          }
+
           closeModal();
-          initSession();
+          await initSession();
+        } else {
+          // Log masuk biasa
+          const { data, error } = await db.auth.signInWithPassword({
+            email: email,
+            password: password
+          });
+
+          if (error) {
+            alert('Ralat log masuk: ' + error.message);
+            submitBtn.textContent = 'Masuk Sekarang';
+            submitBtn.disabled = false;
+            return;
+          }
+
+          closeModal();
+          await initSession();
         }
-      } else {
-        const { data, error } = await db.auth.signInWithPassword({
-          email: email,
-          password: password
-        });
-        if (error) alert('Ralat log masuk: ' + error.message);
-        else {
-          closeModal();
-          initSession();
+      } catch (err) {
+        alert('Ralat tidak dijangka: ' + err.message);
+      } finally {
+        submitBtn.disabled = false;
+        if (currentMode === 'register') {
+          submitBtn.textContent = 'Daftar & Masuk';
+        } else {
+          submitBtn.textContent = 'Masuk Sekarang';
         }
       }
     }
@@ -588,7 +608,6 @@
       renderLoggedOut();
     }
 
-    // Fungsi Admin: Muat Senarai Pengguna & Togol Premium
     async function loadAdminDashboard() {
       document.getElementById('admin-panel').style.display = 'block';
       const tbody = document.getElementById('users-list-body');
@@ -633,7 +652,6 @@
       alert('Modul permainan ' + gameKey + ' akan kita bina pada langkah seterusnya!');
     }
 
-    // Jalankan sesi bila buka
     window.addEventListener('DOMContentLoaded', initSession);
   </script>
 </body>
